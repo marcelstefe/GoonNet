@@ -30,3 +30,7 @@ Typical use cases include:
 - Windows 10/11
 - .NET SDK matching the target framework of `AeroVisApp.csproj`
 - A connected AeroVis Wind Tunnel for live readings
+
+## Screenshot
+
+![AeroVisApp dashboard](docs/screenshot.png)
