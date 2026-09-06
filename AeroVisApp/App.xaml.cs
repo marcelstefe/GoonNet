@@ -11,6 +11,9 @@ public partial class App : Application
 {
     private async void Application_Startup(object sender, StartupEventArgs e)
     {
+        var settings = SettingsService.Load();
+        ThemeManager.Apply(settings.DarkMode);
+
         var splash = new SplashWindow();
         splash.Show();
 

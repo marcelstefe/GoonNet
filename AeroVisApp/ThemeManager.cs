@@ -19,8 +19,8 @@ public static class ThemeManager
             r["AppCardBg"]           = Brush(0x0c, 0x0c, 0x0c);
             r["AppNavActive"]        = Brush(0x38, 0x38, 0x38);
             r["AppNavHover"]         = Brush(0x2d, 0x2d, 0x2d);
-            r["AppNavPressed"]       = Brush(0x25, 0x25, 0x25);
-            r["AppNavActiveHover"]   = Brush(0x2a, 0x38, 0x4a);
+            r["AppNavPressed"]       = Brush(0x2d, 0x2d, 0x2d);
+            r["AppNavActiveHover"]   = Brush(0x2d, 0x2d, 0x2d);
             r["AppSubtleBg"]         = Brush(0x2a, 0x2a, 0x2a);
             r["AppSubtleHover"]      = Brush(0x36, 0x36, 0x36);
             r["AppNavBtnHover"]      = Brush(0x2d, 0x2d, 0x2d);

@@ -120,22 +120,8 @@
                 <!-- General page -->
                 <ScrollViewer x:Name="PageGeneral" VerticalScrollBarVisibility="Auto" Padding="24,20">
                     <StackPanel>
-                        <TextBlock Text="GENERAL" FontSize="10" FontWeight="SemiBold"
-                                   Foreground="#888" Margin="0,0,0,12"/>
-                        <Grid Margin="0,0,0,16">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="Notifications" FontSize="13" FontWeight="Medium"/>
-                                <TextBlock Text="Show desktop alerts" FontSize="11" Foreground="#999"/>
-                            </StackPanel>
-                            <ui:ToggleSwitch Grid.Column="1" VerticalAlignment="Center" IsChecked="True"/>
-                        </Grid>
-
                         <TextBlock Text="DISPLAY" FontSize="10" FontWeight="SemiBold"
-                                   Foreground="#888" Margin="0,20,0,12"/>
+                                   Foreground="#888" Margin="0,0,0,12"/>
 
                         <!-- Dark Mode -->
                         <Grid Margin="0,0,0,16">
@@ -149,62 +135,6 @@
                             </StackPanel>
                             <ui:ToggleSwitch x:Name="DarkModeToggle" Grid.Column="1" VerticalAlignment="Center"
                                              Checked="DarkModeToggle_Changed" Unchecked="DarkModeToggle_Changed"/>
-                        </Grid>
-
-                        <!-- DATE & TIME section -->
-                        <TextBlock Text="DATE &amp; TIME" FontSize="10" FontWeight="SemiBold"
-                                   Foreground="#888" Margin="0,20,0,12"/>
-
-                        <!-- Date Format -->
-                        <Grid Margin="0,0,0,16">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="Date Format" FontSize="13" FontWeight="Medium"/>
-                                <TextBlock Text="How dates are displayed" FontSize="11" Foreground="#999"/>
-                            </StackPanel>
-                            <ui:DropDownButton Grid.Column="1" Height="28" Padding="10,0"
-                                              CornerRadius="10" Content="D Month Y"
-                                              VerticalAlignment="Center"
-                                              Background="Transparent"
-                                              BorderBrush="Transparent"
-                                              MouseOverBackground="#f2f2f2"
-                                              MouseOverBorderBrush="Transparent">
-                                <ui:DropDownButton.Flyout>
-                                    <ContextMenu>
-                                        <MenuItem Header="D Month Y"/>
-                                        <MenuItem Header="D/M/Y"/>
-                                    </ContextMenu>
-                                </ui:DropDownButton.Flyout>
-                            </ui:DropDownButton>
-                        </Grid>
-
-                        <!-- Time Format -->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="Time Format" FontSize="13" FontWeight="Medium"/>
-                                <TextBlock Text="How time is displayed" FontSize="11" Foreground="#999"/>
-                            </StackPanel>
-                            <ui:DropDownButton Grid.Column="1" Height="28" Padding="10,0"
-                                              CornerRadius="10" Content="24-Hour"
-                                              VerticalAlignment="Center"
-                                              Background="Transparent"
-                                              BorderBrush="Transparent"
-                                              MouseOverBackground="#f2f2f2"
-                                              MouseOverBorderBrush="Transparent">
-                                <ui:DropDownButton.Flyout>
-                                    <ContextMenu>
-                                        <MenuItem Header="24-Hour"/>
-                                        <MenuItem Header="12-Hour"/>
-                                    </ContextMenu>
-                                </ui:DropDownButton.Flyout>
-                            </ui:DropDownButton>
                         </Grid>
                     </StackPanel>
                 </ScrollViewer>
@@ -222,21 +152,21 @@
                                     <TextBlock Text="Throttle Sensitivity" FontSize="13" FontWeight="Medium"/>
                                     <TextBlock Text="Input response scale" FontSize="11" Foreground="#999"/>
                                 </StackPanel>
-                                <ui:DropDownButton Grid.Column="1" Height="28" Padding="10,0"
+                                <ui:DropDownButton x:Name="ThrottleSensitivityDropDown" Grid.Column="1" Height="28" Padding="10,0"
                                                   CornerRadius="10" Content="5%"
                                                   VerticalAlignment="Center"
                                                   Background="Transparent"
                                                   BorderBrush="Transparent"
-                                                  MouseOverBackground="#f2f2f2"
+                                                  MouseOverBackground="{DynamicResource AppSubtleHover}"
                                                   MouseOverBorderBrush="Transparent">
                                     <ui:DropDownButton.Flyout>
                                         <ContextMenu>
-                                            <MenuItem Header="1%"/>
-                                            <MenuItem Header="2%"/>
-                                            <MenuItem Header="5%"/>
-                                            <MenuItem Header="10%"/>
-                                            <MenuItem Header="25%"/>
-                                            <MenuItem Header="50%"/>
+                                            <MenuItem Header="1%" Click="ThrottleSensitivity_Click"/>
+                                            <MenuItem Header="2%" Click="ThrottleSensitivity_Click"/>
+                                            <MenuItem Header="5%" Click="ThrottleSensitivity_Click"/>
+                                            <MenuItem Header="10%" Click="ThrottleSensitivity_Click"/>
+                                            <MenuItem Header="25%" Click="ThrottleSensitivity_Click"/>
+                                            <MenuItem Header="50%" Click="ThrottleSensitivity_Click"/>
                                         </ContextMenu>
                                     </ui:DropDownButton.Flyout>
                                 </ui:DropDownButton>
@@ -256,19 +186,19 @@
                                     <TextBlock Text="Fogger Power" FontSize="13" FontWeight="Medium"/>
                                     <TextBlock Text="Output power level" FontSize="11" Foreground="#999"/>
                                 </StackPanel>
-                                <ui:DropDownButton Grid.Column="1" Height="28" Padding="10,0"
+                                <ui:DropDownButton x:Name="FoggerPowerDropDown" Grid.Column="1" Height="28" Padding="10,0"
                                                   CornerRadius="10" Content="50%"
                                                   VerticalAlignment="Center"
                                                   Background="Transparent"
                                                   BorderBrush="Transparent"
-                                                  MouseOverBackground="#f2f2f2"
+                                                  MouseOverBackground="{DynamicResource AppSubtleHover}"
                                                   MouseOverBorderBrush="Transparent">
                                     <ui:DropDownButton.Flyout>
                                         <ContextMenu>
-                                            <MenuItem Header="25%"/>
-                                            <MenuItem Header="50%"/>
-                                            <MenuItem Header="75%"/>
-                                            <MenuItem Header="100%"/>
+                                            <MenuItem Header="25%" Click="FoggerPower_Click"/>
+                                            <MenuItem Header="50%" Click="FoggerPower_Click"/>
+                                            <MenuItem Header="75%" Click="FoggerPower_Click"/>
+                                            <MenuItem Header="100%" Click="FoggerPower_Click"/>
                                         </ContextMenu>
                                     </ui:DropDownButton.Flyout>
                                 </ui:DropDownButton>
@@ -304,66 +234,9 @@
                 <ScrollViewer x:Name="PageData" VerticalScrollBarVisibility="Auto" Padding="24,20"
                               Visibility="Collapsed">
                     <StackPanel>
-                        <TextBlock Text="DATA" FontSize="10" FontWeight="SemiBold"
-                                   Foreground="#888" Margin="0,0,0,12"/>
-
-                        <!-- Units -->
-                        <Grid Margin="0,0,0,16">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="Units" FontSize="13" FontWeight="Medium"/>
-                                <TextBlock Text="Metric / Imperial" FontSize="11" Foreground="#999"/>
-                            </StackPanel>
-                            <ui:DropDownButton Grid.Column="1" Height="28" Padding="10,0"
-                                              CornerRadius="10" Content="Metric"
-                                              VerticalAlignment="Center"
-                                              Background="Transparent"
-                                              BorderBrush="Transparent"
-                                              MouseOverBackground="#f2f2f2"
-                                              MouseOverBorderBrush="Transparent">
-                                <ui:DropDownButton.Flyout>
-                                    <ContextMenu>
-                                        <MenuItem Header="Metric"/>
-                                        <MenuItem Header="Imperial"/>
-                                    </ContextMenu>
-                                </ui:DropDownButton.Flyout>
-                            </ui:DropDownButton>
-                        </Grid>
-
-                        <!-- Data Refresh Rate -->
-                        <Grid Margin="0,0,0,16">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="Data Refresh Rate" FontSize="13" FontWeight="Medium"/>
-                                <TextBlock Text="Live data polling interval" FontSize="11" Foreground="#999"/>
-                            </StackPanel>
-                            <ui:DropDownButton Grid.Column="1" Height="28" Padding="10,0"
-                                              CornerRadius="10" Content="1s"
-                                              VerticalAlignment="Center"
-                                              Background="Transparent"
-                                              BorderBrush="Transparent"
-                                              MouseOverBackground="#f2f2f2"
-                                              MouseOverBorderBrush="Transparent">
-                                <ui:DropDownButton.Flyout>
-                                    <ContextMenu>
-                                        <MenuItem Header="0.5s"/>
-                                        <MenuItem Header="1s"/>
-                                        <MenuItem Header="2s"/>
-                                        <MenuItem Header="5s"/>
-                                    </ContextMenu>
-                                </ui:DropDownButton.Flyout>
-                            </ui:DropDownButton>
-                        </Grid>
-
                         <!-- HISTORY section -->
                         <TextBlock Text="HISTORY" FontSize="10" FontWeight="SemiBold"
-                                   Foreground="#888" Margin="0,20,0,12"/>
+                                   Foreground="#888" Margin="0,0,0,12"/>
 
                         <!-- Simulation History -->
                         <Grid>
@@ -454,19 +327,13 @@
             <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="12,4,14,12"
                   MouseLeftButtonDown="BottomBar_MouseDown">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Border BorderThickness="0"
-                            CornerRadius="12" Padding="15,4" Margin="0,0,8,0" Cursor="Hand">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="#0067c0"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#00559f"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Text="Save" Foreground="White" FontSize="12" VerticalAlignment="Center"/>
+                    <Border x:Name="SaveButton" BorderThickness="0"
+                            CornerRadius="12" Padding="15,4" Margin="0,0,8,0" Cursor="Hand"
+                            Background="#0067c0"
+                            MouseLeftButtonUp="SaveButton_Click"
+                            MouseEnter="SaveButton_MouseEnter"
+                            MouseLeave="SaveButton_MouseLeave">
+                        <TextBlock x:Name="SaveButtonText" Text="Save" Foreground="White" FontSize="12" VerticalAlignment="Center"/>
                     </Border>
                     <Border BorderThickness="1.4" BorderBrush="Gray"
                             CornerRadius="12" Padding="15,4" Cursor="Hand"

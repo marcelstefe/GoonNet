@@ -42,6 +42,8 @@ public partial class MainWindow : FluentWindow
         };
 
         ThemeManager.ThemeChanged += isDark => ApplyIconTheme(isDark);
+        ApplyIconTheme(ThemeManager.IsDark);
+        SettingsService.SettingsChanged += _ => UpdateClock();
     }
 
     private void ApplyIconTheme(bool isDark)
@@ -79,8 +81,9 @@ public partial class MainWindow : FluentWindow
     private void UpdateClock()
     {
         var now = DateTime.Now;
-        LiveDate.Text = now.ToString("dd MMM yyyy");
-        LiveTime.Text = now.ToString("HH:mm:ss");
+        var s = SettingsService.Current;
+        LiveDate.Text = now.ToString(s.DateFormat == "D/M/Y" ? "d/M/yyyy" : "dd MMM yyyy");
+        LiveTime.Text = now.ToString(s.TimeFormat == "12-Hour" ? "hh:mm:ss tt" : "HH:mm:ss");
     }
 
     private void PlayPauseButton_Click(object sender, RoutedEventArgs e)
