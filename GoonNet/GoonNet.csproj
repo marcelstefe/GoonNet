@@ -1,0 +1,75 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+        <ApplicationIcon>res\window\icon\GoonNet-Icon.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SharpVectors.Wpf" Version="1.8.5" />
+      <PackageReference Include="WPF-UI" Version="4.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="res\fonts\InterVariable.ttf" />
+      <None Remove="res\fonts\Inter-VariableFont_opsz,wght.ttf" />
+      <Resource Include="res\fonts\Inter-VariableFont_opsz,wght.ttf" />
+      <None Remove="res\window\dark\droplet.svg" />
+      <Resource Include="res\settings\settings.svg" />
+      <None Remove="res\window\dark\fan.svg" />
+      <None Remove="res\window\dark\gauge.svg" />
+      <None Remove="res\window\dark\house.svg" />
+      <None Remove="res\window\dark\road.svg" />
+      <None Remove="res\window\dark\settings.svg" />
+      <None Remove="res\window\dark\thermometer.svg" />
+      <None Remove="res\settings\dark\settings.svg" />
+      <None Remove="res\datapanel\thermometer.svg" />
+      <None Remove="res\datapanel\arrow-right.svg" />
+      <None Remove="res\datapanel\wind.svg" />
+      <None Remove="res\datapanel\droplets.svg" />
+      <None Remove="res\datapanel\arrow-down.svg" />
+      <None Remove="res\datapanel\wind-arrow-down.svg" />
+      <None Remove="res\datapanel\dark\thermometer.svg" />
+      <None Remove="res\datapanel\dark\arrow-right.svg" />
+      <None Remove="res\datapanel\dark\wind.svg" />
+      <None Remove="res\datapanel\dark\droplets.svg" />
+      <None Remove="res\datapanel\dark\arrow-down.svg" />
+      <None Remove="res\datapanel\dark\wind-arrow-down.svg" />
+      <None Remove="res\window\GoonNet-Banner-White.png" />
+      <Resource Include="res\window\GoonNet-Banner-White.png" />
+      <None Remove="res\window\play.svg" />
+      <Resource Include="res\window\play.svg" />
+      <None Remove="res\window\icon\GoonNet-Icon.ico" />
+      <Resource Include="res\window\icon\GoonNet-Icon.ico" />
+      <None Remove="res\window\volume.svg" />
+      <Resource Include="res\window\volume.svg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="res\window\icon\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="res\window\car.png" />
+      <None Remove="res\window\circuit.png" />
+      <None Remove="res\window\home.png" />
+      <None Remove="res\window\settings.png" />
+      <None Remove="res\window\house.svg" />
+      <None Remove="res\window\road.svg" />
+      <None Remove="res\window\car.svg" />
+      <None Remove="res\window\settings.svg" />
+      <None Remove="res\window\dots.svg" />
+      <None Remove="res\window\droplet.svg" />
+      <None Remove="res\window\fan.svg" />
+      <None Remove="res\window\thermometer.svg" />
+      <None Remove="res\window\gauge.svg" />
+      <None Remove="res\window\icon\AeroVis-Icon-Orange.ico" />
+      <None Remove="res\window\chevron-left.svg" />
+      <None Remove="res\window\chevron-right.svg" />
+    </ItemGroup>
+
+</Project>

@@ -1,8 +1,0 @@
-<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-	<style>
-		.s0 { fill: none;stroke: #ffffff;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2 } 
-	</style>
-	<path class="s0" d="m3 12c0 3.64 2.19 6.92 5.56 8.31 3.36 1.4 7.23 0.63 9.8-1.95 2.58-2.57 3.35-6.44 1.95-9.8-1.39-3.37-4.67-5.56-8.31-5.56q-0.93 0-1.85 0.18-0.92 0.19-1.79 0.54-0.86 0.35-1.64 0.86-0.79 0.51-1.46 1.16l-2.26 2.26"/>
-	<path class="s0" d="m3 3v5h5"/>
-	<path class="s0" d="m12 7v5l4 2"/>
-</svg>

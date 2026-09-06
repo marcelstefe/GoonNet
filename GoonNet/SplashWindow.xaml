@@ -1,0 +1,20 @@
+<Window x:Class="GoonNet.SplashWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        ShowInTaskbar="False"
+        Topmost="True"
+        SizeToContent="WidthAndHeight">
+    <Border x:Name="SplashRoot" Background="White" CornerRadius="12" Padding="40,30">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="24" ShadowDepth="0" Opacity="0.25"/>
+        </Border.Effect>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image x:Name="SplashBanner" Source="pack://application:,,,/res/window/GoonNet-Banner-White.png"
+                   Width="420" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"/>
+        </StackPanel>
+    </Border>
+</Window>
