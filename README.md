@@ -1,14 +1,16 @@
 # AeroVisApp
 
-AeroVisApp is a Windows desktop application (WPF, .NET) built to drive and visualize experiments on the **AeroVis Wind Tunnel**.
+![AeroVisApp dashboard](docs/screenshot.png)
+
+AeroVisApp is a Windows desktop application (WPF, .NET) built to drive and visualize experiments on the **Aero wind tunnel**. It provides a single operator console for configuring a test run, controlling the tunnel hardware, and observing live aerodynamic measurements as they are captured from the test section.
 
 ## Purpose
 
-The AeroVis Wind Tunnel is used to study how air interacts with a 1:24 scale model mounted in the test section — measuring forces and pressures.
+The Aero wind tunnel is used to study how air interacts with a model mounted in the test section — measuring forces, pressures, and environmental conditions across a range of wind speeds. AeroVisApp is the human-facing side of that setup: it turns raw sensor streams into a readable, real-time dashboard and gives the operator the controls needed to run repeatable experiments without touching the underlying hardware directly.
 
 Typical use cases include:
 
-- Running guided flight-style scenarios.
+- Running guided flight-style scenarios (Free Flight, Circuit Training, Cross Country, Formation Flying) or fully custom test profiles.
 - Sweeping wind speed and throttle to characterize a model's aerodynamic behavior.
 - Recording drag coefficient, axial forces, wind speed, temperature, humidity, and pressures for later analysis.
 - Comparing runs from the simulation history to iterate on a model or a test setup.
@@ -25,12 +27,40 @@ Typical use cases include:
   - *Data*: simulation history.
 - **Modern UI** — WPF + WPF-UI, with light and dark themes and a splash screen on startup.
 
+![Settings window](docs/settings.png)
+
+## Project Structure
+
+```
+AeroVisApp/
+├── AeroVisApp.sln
+└── AeroVisApp/
+    ├── App.xaml / App.xaml.cs        // Application entry point
+    ├── SplashWindow.xaml(.cs)        // Startup splash
+    ├── MainWindow.xaml(.cs)          // Main dashboard: telemetry, charts, controls
+    ├── SettingsWindow.xaml(.cs)      // General / Device / Data settings
+    ├── AppSettings.cs                // Persisted user settings model
+    ├── ThemeManager.cs               // Light/dark theme handling
+    └── res/                          // Icons and SVG assets
+```
+
 ## Requirements
 
 - Windows 10/11
 - .NET SDK matching the target framework of `AeroVisApp.csproj`
-- A connected AeroVis Wind Tunnel for live readings
+- A connected Aero wind tunnel (or a compatible data source) for live readings
 
-## Screenshot
+## Build & Run
 
-![AeroVisApp dashboard](docs/screenshot.png)
+From the repository root:
+
+```powershell
+dotnet build AeroVisApp.sln
+dotnet run --project AeroVisApp\AeroVisApp.csproj
+```
+
+Or open `AeroVisApp.sln` in Visual Studio / JetBrains Rider and run the `AeroVisApp` project.
+
+## Notes
+
+Values shown in the UI without a connected tunnel are placeholders. Once the tunnel is connected and streaming, the dashboard reflects live measurements from the test section.
