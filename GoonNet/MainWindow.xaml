@@ -22,6 +22,8 @@
 
     <ui:FluentWindow.FontFamily>pack://application:,,,/fonts/#Inter-VariableFont_opsz,wght</ui:FluentWindow.FontFamily>
     <ui:FluentWindow.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
         <Style TargetType="{x:Type ui:TitleBarButton}"
                BasedOn="{StaticResource {x:Type ui:TitleBarButton}}">
             <Setter Property="Height" Value="48"/>
@@ -165,7 +167,7 @@
                 <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
                     <!-- L/R VU meter pinned to bottom (LED circles) -->
-                    <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,0,0,8">
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical" HorizontalAlignment="Center" Margin="8,0,0,0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
                         <!-- Left channel -->
@@ -256,10 +258,24 @@
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Top">
                     <RadioButton x:Name="NavManualSimulation"
-                                 Style="{StaticResource NavRadioButtonStyle}" Width="60" ToolTip="Test Panel"
+                                 Style="{StaticResource NavRadioButtonStyle}" Width="60" ToolTip="Studio"
                                  GroupName="Nav" IsChecked="True"
                                  Checked="NavButton_Checked">
                         <svgc:SvgViewbox Source="/res/window/play.svg" Width="20" Height="20" Margin="10,0,0,0"/>
+                    </RadioButton>
+
+                    <RadioButton x:Name="NavLibrary"
+                                 Style="{StaticResource NavRadioButtonStyle}" Width="60" ToolTip="Library"
+                                 GroupName="Nav"
+                                 Checked="NavButton_Checked">
+                        <svgc:SvgViewbox Source="/res/window/library.svg" Width="20" Height="20" Margin="10,0,0,0"/>
+                    </RadioButton>
+
+                    <RadioButton x:Name="NavJingle"
+                                 Style="{StaticResource NavRadioButtonStyle}" Width="60" ToolTip="Jingle"
+                                 GroupName="Nav"
+                                 Checked="NavButton_Checked">
+                        <svgc:SvgViewbox Source="/res/window/jingle.svg" Width="20" Height="20" Margin="10,0,0,0"/>
                     </RadioButton>
 
                     </StackPanel>
@@ -267,24 +283,57 @@
             </Border>
 
             <!-- Test Panel -->
-            <Grid x:Name="PageManualSimulation" Grid.Column="1" Grid.Row="0" Margin="12,0,12,0">
+            <Grid x:Name="PageManualSimulation" Grid.Column="1" Grid.Row="0" Margin="12,0,12,0"
+                  Visibility="{Binding IsChecked, ElementName=NavManualSimulation, Converter={StaticResource BoolToVis}}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Row="0" Grid.Column="0" Margin="0,0,6,6"
-                        Background="{DynamicResource AppCardBg}" CornerRadius="8"/>
-                <Border Grid.Row="0" Grid.Column="1" Margin="6,0,0,6"
-                        Background="{DynamicResource AppCardBg}" CornerRadius="8"/>
-                <Border Grid.Row="1" Grid.Column="0" Margin="0,6,6,8"
-                        Background="{DynamicResource AppCardBg}" CornerRadius="8"/>
-                <Border Grid.Row="1" Grid.Column="1" Margin="6,6,0,8"
-                        Background="{DynamicResource AppCardBg}" CornerRadius="8"/>
+                <Border Grid.Row="0" Grid.ColumnSpan="2" Height="250" Margin="0,0,0,6"
+                        Background="{DynamicResource AppCardBg}" CornerRadius="8">
+                    <Grid Margin="16,12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="12"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="12"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="12"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Background="Black" CornerRadius="8"/>
+                        <Border Grid.Row="2" Background="Black" CornerRadius="8"/>
+                        <Border Grid.Row="4" Background="Black" CornerRadius="8"/>
+                        <Border Grid.Row="6" Background="Black" CornerRadius="8"/>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Margin="0,6,6,6"
+                            Background="{DynamicResource AppCardBg}" CornerRadius="8"/>
+                    <Border Grid.Row="1" Height="100" Margin="0,6,6,8"
+                            Background="{DynamicResource AppCardBg}" CornerRadius="8"/>
+                </Grid>
+
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Height="100" Margin="6,6,0,6"
+                            Background="{DynamicResource AppCardBg}" CornerRadius="8"/>
+                    <Border Grid.Row="1" Margin="6,6,0,8"
+                            Background="{DynamicResource AppCardBg}" CornerRadius="8"/>
+                </Grid>
             </Grid>
             <!-- Bottom bar spanning content area -->
             <Grid Grid.Row="1" Grid.Column="1" Margin="12,6,14,13">

@@ -1,0 +1,7 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+	<style>
+		.s0 { fill: none;stroke: #ffffff;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2 } 
+	</style>
+	<path fill-rule="evenodd" class="s0" d="m15 3h3c0.55 0 1 0.45 1 1v16c0 0.55-0.45 1-1 1h-3c-0.55 0-1-0.45-1-1v-16c0-0.55 0.45-1 1-1z"/>
+	<path fill-rule="evenodd" class="s0" d="m6 3h3c0.55 0 1 0.45 1 1v16c0 0.55-0.45 1-1 1h-3c-0.55 0-1-0.45-1-1v-16c0-0.55 0.45-1 1-1z"/>
+</svg>

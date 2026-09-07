@@ -8,7 +8,7 @@
         ShowInTaskbar="False"
         Topmost="True"
         SizeToContent="WidthAndHeight">
-    <Border x:Name="SplashRoot" Background="White" CornerRadius="12" Padding="40,30">
+    <Border x:Name="SplashRoot" Background="#0C0C0C" CornerRadius="12" Padding="40,30">
         <Border.Effect>
             <DropShadowEffect BlurRadius="24" ShadowDepth="0" Opacity="0.25"/>
         </Border.Effect>

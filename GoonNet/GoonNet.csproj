@@ -40,6 +40,7 @@
       <None Remove="res\datapanel\dark\arrow-down.svg" />
       <None Remove="res\datapanel\dark\wind-arrow-down.svg" />
       <None Remove="res\window\GoonNet-Banner-White.png" />
+      <Resource Include="res\studio\play.svg" />
       <Resource Include="res\window\GoonNet-Banner-White.png" />
       <None Remove="res\window\play.svg" />
       <Resource Include="res\window\play.svg" />
@@ -47,6 +48,10 @@
       <Resource Include="res\window\icon\GoonNet-Icon.ico" />
       <None Remove="res\window\volume.svg" />
       <Resource Include="res\window\volume.svg" />
+      <None Remove="res\window\jingle.svg" />
+      <Resource Include="res\window\jingle.svg" />
+      <None Remove="res\window\library.svg" />
+      <Resource Include="res\window\library.svg" />
     </ItemGroup>
 
     <ItemGroup>
