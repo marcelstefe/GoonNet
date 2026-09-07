@@ -1,6 +1,6 @@
 # GoonNet
 
-AeroDih
+DihNet
 
 ![Settings window](docs/settings.png)
 
