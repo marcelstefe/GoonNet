@@ -37,12 +37,43 @@ public partial class MainWindow : FluentWindow
     {
         var now = DateTime.Now;
         var s = SettingsService.Current;
-        LiveDate.Text = now.ToString(s.DateFormat == "D/M/Y" ? "d/M/yyyy" : "dd MMM yyyy");
+        LiveDate.Text = now.ToString(s.DateFormat == "D/M/Y" ? "dddd d/M/yyyy" : "dddd dd MMM yyyy");
         LiveTime.Text = now.ToString(s.TimeFormat == "12-Hour" ? "hh:mm:ss tt" : "HH:mm:ss");
     }
 
     private void NavButton_Checked(object sender, RoutedEventArgs e)
     {
+    }
+
+    private bool _isManualMode = true;
+    private bool _isDlsOn = false;
+
+    private void DlsButton_Click(object sender, RoutedEventArgs e)
+    {
+        _isDlsOn = !_isDlsOn;
+        if (_isDlsOn)
+        {
+            DlsButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#ef4444"));
+        }
+        else
+        {
+            DlsButton.Background = new SolidColorBrush(Colors.Black);
+        }
+    }
+
+    private void ManualModeButton_Click(object sender, RoutedEventArgs e)
+    {
+        _isManualMode = !_isManualMode;
+        if (_isManualMode)
+        {
+            ManualModeButton.Content = "Manual";
+            ManualModeButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#eab308"));
+        }
+        else
+        {
+            ManualModeButton.Content = "Auto";
+            ManualModeButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#22c55e"));
+        }
     }
 
     private void SettingsButton_Click(object sender, RoutedEventArgs e)

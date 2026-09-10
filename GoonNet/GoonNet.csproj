@@ -52,9 +52,39 @@
       <Resource Include="res\window\jingle.svg" />
       <None Remove="res\window\library.svg" />
       <Resource Include="res\window\library.svg" />
+      <None Remove="res\studio\skip-forward.svg" />
+      <Resource Include="res\studio\skip-forward.svg" />
+      <None Remove="res\studio\square.svg" />
+      <Resource Include="res\studio\square.svg" />
+      <None Remove="res\library\folder-down.svg" />
+      <Resource Include="res\library\folder-down.svg" />
+      <None Remove="res\library\plus.svg" />
+      <Resource Include="res\library\plus.svg" />
+      <None Remove="res\library\refresh-ccw.svg" />
+      <Resource Include="res\library\refresh-ccw.svg" />
+      <None Remove="res\library\file-spreadsheet.svg" />
+      <Resource Include="res\library\file-spreadsheet.svg" />
+      <None Remove="res\library\square-pen.svg" />
+      <Resource Include="res\library\square-pen.svg" />
+      <None Remove="res\library\trash.svg" />
+      <Resource Include="res\library\trash.svg" />
+      <None Remove="res\events\ad.svg" />
+      <Resource Include="res\events\spot.svg" />
+      <None Remove="res\events\block.svg" />
+      <Resource Include="res\events\block.svg" />
+      <None Remove="res\events\command.svg" />
+      <Resource Include="res\events\command.svg" />
+      <None Remove="res\events\jingle.svg" />
+      <Resource Include="res\events\jingle.svg" />
+      <None Remove="res\events\mic.svg" />
+      <Resource Include="res\events\vt.svg" />
+      <None Remove="res\events\music.svg" />
+      <Resource Include="res\events\music.svg" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="res\events\" />
+      <Folder Include="res\library\" />
       <Folder Include="res\window\icon\" />
     </ItemGroup>
 

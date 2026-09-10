@@ -1,0 +1,7 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+	<style>
+		.s0 { fill: none;stroke: #ffffff;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2 } 
+	</style>
+	<path class="s0" d="m21 4v16"/>
+	<path class="s0" d="m6.03 4.29q-0.47-0.28-1-0.29-0.54 0-1.02 0.26-0.46 0.27-0.74 0.73-0.27 0.47-0.27 1.01v12q0 0.54 0.27 1.01 0.28 0.46 0.74 0.73 0.48 0.26 1.02 0.26 0.53-0.01 1-0.28l10-6q0.45-0.28 0.71-0.73 0.26-0.46 0.26-0.99 0-0.52-0.26-0.98-0.26-0.46-0.71-0.74z"/>
+</svg>
