@@ -348,7 +348,7 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <Button Grid.Row="0" Width="72"
+                            <Button Grid.Row="0" Width="72" ToolTip="Play Next"
                                     Background="Black" Foreground="White"
                                     BorderThickness="0" Cursor="Hand">
                                 <Button.Resources>
@@ -359,7 +359,7 @@
                                 <svgc:SvgViewbox Source="/res/studio/skip-forward.svg" Width="20" Height="20"/>
                             </Button>
 
-                            <Button Grid.Row="2" Width="72" x:Name="SecondaryActionButton"
+                            <Button Grid.Row="2" Width="72" x:Name="SecondaryActionButton" ToolTip="Fade Out"
                                     Background="Black" Foreground="White"
                                     BorderThickness="0" Cursor="Hand">
                                 <Button.Resources>
@@ -371,7 +371,7 @@
                                                  Source="/res/studio/square.svg" Width="20" Height="20"/>
                             </Button>
 
-                            <Button Grid.Row="4" Width="72" x:Name="DlsButton"
+                            <Button Grid.Row="4" Width="72" x:Name="DlsButton" ToolTip="Dynamic Log Scheduling"
                                     Background="Black" Foreground="White"
                                     BorderThickness="0" Cursor="Hand" Content="DLS" FontSize="12"
                                     Click="DlsButton_Click">
@@ -382,7 +382,7 @@
                                 </Button.Resources>
                             </Button>
 
-                            <Button Grid.Row="6" Width="72" x:Name="ManualModeButton"
+                            <Button Grid.Row="6" Width="72" x:Name="ManualModeButton" ToolTip="Playout Mode"
                                     Background="#eab308" Foreground="White"
                                     BorderThickness="0" Cursor="Hand" Content="Manual" FontSize="12"
                                     Click="ManualModeButton_Click">
@@ -430,14 +430,12 @@
                                 </Style>
                             </DataGrid.ColumnHeaderStyle>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Event" Binding="{Binding Event}" Width="80"/>
                                 <DataGridTextColumn Header="Air Time" Binding="{Binding Time}" Width="80"/>
                                 <DataGridTextColumn Header="Length" Binding="{Binding Length}" Width="80"/>
+                                <DataGridTextColumn Header="Event" Binding="{Binding Event}" Width="80"/>
                                 <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
                                 <DataGridTextColumn Header="Intro" Binding="{Binding Intro}" Width="80"/>
-                                <DataGridTextColumn Header="Hot Start" Binding="{Binding Intro}" Width="80"/>
                                 <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="100"/>
-                                <DataGridTextColumn Header="Note" Binding="{Binding Category}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
@@ -459,7 +457,7 @@
 
                             <DockPanel Grid.Row="0" LastChildFill="True">
                                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                    <Button Width="40" Height="40" Margin="0,0,8,0"
+                                    <Button Width="40" Height="40" Margin="0,0,8,0" ToolTip="Import File"
                                             Background="Black" Foreground="White"
                                             BorderThickness="0" Cursor="Hand">
                                         <Button.Resources>
@@ -467,7 +465,7 @@
                                         </Button.Resources>
                                         <svgc:SvgViewbox Source="/res/library/plus.svg" Width="20" Height="20"/>
                                     </Button>
-                                    <Button Width="40" Height="40" Margin="0,0,8,0"
+                                    <Button Width="40" Height="40" Margin="0,0,8,0" ToolTip="Mass Import Files"
                                             Background="Black" Foreground="White"
                                             BorderThickness="0" Cursor="Hand">
                                         <Button.Resources>
@@ -475,37 +473,13 @@
                                         </Button.Resources>
                                         <svgc:SvgViewbox Source="/res/library/folder-down.svg" Width="20" Height="20"/>
                                     </Button>
-                                    <Button Width="40" Height="40" Margin="0,0,8,0"
+                                    <Button Width="40" Height="40" Margin="0,0,8,0" ToolTip="Refresh"
                                             Background="Black" Foreground="White"
                                             BorderThickness="0" Cursor="Hand">
                                         <Button.Resources>
                                             <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
                                         </Button.Resources>
                                         <svgc:SvgViewbox Source="/res/library/refresh-ccw.svg" Width="20" Height="20"/>
-                                    </Button>
-                                    <Button Width="40" Height="40" Margin="0,0,8,0"
-                                            Background="Black" Foreground="White"
-                                            BorderThickness="0" Cursor="Hand">
-                                        <Button.Resources>
-                                            <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
-                                        </Button.Resources>
-                                        <svgc:SvgViewbox Source="/res/library/file-spreadsheet.svg" Width="20" Height="20"/>
-                                    </Button>
-                                    <Button Width="40" Height="40" Margin="0,0,8,0"
-                                            Background="Black" Foreground="White"
-                                            BorderThickness="0" Cursor="Hand">
-                                        <Button.Resources>
-                                            <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
-                                        </Button.Resources>
-                                        <svgc:SvgViewbox Source="/res/library/square-pen.svg" Width="20" Height="20"/>
-                                    </Button>
-                                    <Button Width="40" Height="40" Margin="0,0,8,0"
-                                            Background="Black" Foreground="White"
-                                            BorderThickness="0" Cursor="Hand">
-                                        <Button.Resources>
-                                            <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
-                                        </Button.Resources>
-                                        <svgc:SvgViewbox Source="/res/library/trash.svg" Width="20" Height="20"/>
                                     </Button>
                                     </StackPanel>
                                 <ui:TextBox Height="40" VerticalAlignment="Center" PlaceholderText="Search..."/>
@@ -585,8 +559,8 @@
                                 </Style>
                             </DataGrid.ColumnHeaderStyle>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Event" Binding="{Binding Event}" Width="80"/>
                                 <DataGridTextColumn Header="Length" Binding="{Binding Length}" Width="80"/>
+                                <DataGridTextColumn Header="Event" Binding="{Binding Event}" Width="80"/>
                                 <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
                                 <DataGridTextColumn Header="Intro" Binding="{Binding Intro}" Width="80"/>
                                 <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="100"/>
