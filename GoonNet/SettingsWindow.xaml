@@ -10,7 +10,7 @@
                  WindowStartupLocation="CenterOwner"
                  ShowInTaskbar="False"
                  ExtendsContentIntoTitleBar="True"
-                 WindowBackdropType="Mica"
+                 WindowBackdropType="None"
                  WindowCornerPreference="Round"
                  FontFamily="pack://application:,,,/res/fonts/#Inter Variable">
 

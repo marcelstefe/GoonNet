@@ -1,0 +1,276 @@
+<ui:FluentWindow x:Class="GoonNet.ImportFileWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+                 xmlns:local="clr-namespace:GoonNet"
+                 xmlns:svl="clr-namespace:WPFSoundVisualizationLib;assembly=WPFSoundVisualizationLib"
+                 Title="Import File"
+                 Width="1000" Height="775"
+                 ResizeMode="NoResize"
+                 WindowStartupLocation="CenterOwner"
+                 ShowInTaskbar="True"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="None"
+                 WindowCornerPreference="Round"
+                 FontFamily="pack://application:,,,/res/fonts/#Inter Variable">
+
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0" Title="Import File" Height="48"
+                     ShowMinimize="False" ShowMaximize="False"/>
+
+        <Border Grid.Row="1" Margin="12,8,12,8"
+                Background="{DynamicResource AppCardBg}" CornerRadius="8">
+            <StackPanel Margin="24,20" Orientation="Vertical">
+                <TextBlock Text="File" FontSize="13" Margin="0,0,0,6"/>
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ui:TextBox x:Name="FilePathBox" Grid.Column="0" Height="36"
+                                PlaceholderText="Select a file to import..."/>
+                    <ui:Button Grid.Column="1" Content="Browse..." Margin="8,0,0,0"
+                               Height="36" Padding="14,0"
+                               Click="BrowseButton_Click"/>
+                </Grid>
+
+                <TextBlock Text="Artist" FontSize="13" Margin="0,0,0,6"/>
+                <ui:TextBox x:Name="ArtistBox" Height="36" Margin="0,0,0,16"
+                            PlaceholderText="Artist"/>
+
+                <TextBlock Text="Title" FontSize="13" Margin="0,0,0,6"/>
+                <ui:TextBox x:Name="TitleBox" Height="36" Margin="0,0,0,16"
+                            PlaceholderText="Title"/>
+
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Type" FontSize="13" Margin="0,0,0,6"/>
+                    <ComboBox Grid.Row="1" Grid.Column="0" x:Name="CategoryBox" Height="36"
+                              Style="{StaticResource AppComboBoxStyle}" SelectedIndex="0">
+                        <ComboBoxItem Content="Song"/>
+                        <ComboBoxItem Content="Station ID"/>
+                        <ComboBoxItem Content="Promo"/>
+                        <ComboBoxItem Content="Commercial"/>
+                        <ComboBoxItem Content="News"/>
+                        <ComboBoxItem Content="Bed"/>
+                        <ComboBoxItem Content="Voice Track"/>
+                    </ComboBox>
+                </Grid>
+
+                <TextBlock Text="Note" FontSize="13" Margin="0,0,0,6"/>
+                <ui:TextBox x:Name="NoteBox" Height="100" Margin="0,0,0,16"
+                            PlaceholderText="Optional Note..."/>
+
+                <TextBlock Text="Track Editor" FontSize="13" Margin="0,0,0,6"/>
+
+                <Border BorderBrush="#33FFFFFF" BorderThickness="1" CornerRadius="8"
+                        Background="#0f0f0f" Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Timing header spanning both columns -->
+                        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="4,0,4,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Length" FontSize="12" Opacity="0.7"
+                                       Margin="0,0,0,4" Foreground="{DynamicResource AppSidebarValue}"/>
+                            <ui:TextBox Grid.Row="1" Grid.Column="0" x:Name="LengthText" Text="--:--"
+                                        Height="35" IsReadOnly="True"
+                                        HorizontalContentAlignment="Center" FontWeight="SemiBold"/>
+
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Intro" FontSize="12" Opacity="0.7"
+                                       Margin="0,0,0,4" Foreground="White"/>
+                            <ui:TextBox Grid.Row="1" Grid.Column="2" x:Name="IntroText" Text="--:--"
+                                        Height="35" IsReadOnly="True"
+                                        HorizontalContentAlignment="Center" FontWeight="SemiBold"
+                                        Foreground="#22c55e"/>
+
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="Hook" FontSize="12" Opacity="0.7"
+                                       Margin="0,0,0,4" Foreground="White"/>
+                            <ui:TextBox Grid.Row="1" Grid.Column="4" x:Name="HookText" Text="--:--"
+                                        Height="35" IsReadOnly="True"
+                                        HorizontalContentAlignment="Center" FontWeight="SemiBold"
+                                        Foreground="#eab308"/>
+
+                            <TextBlock Grid.Row="0" Grid.Column="6" Text="Outro" FontSize="12" Opacity="0.7"
+                                       Margin="0,0,0,4" Foreground="White"/>
+                            <ui:TextBox Grid.Row="1" Grid.Column="6" x:Name="OutroText" Text="--:--"
+                                        Height="35" IsReadOnly="True"
+                                        HorizontalContentAlignment="Center" FontWeight="SemiBold"
+                                        Foreground="#ef4444"/>
+                        </Grid>
+
+                        <!-- Waveform -->
+                        <Border Grid.Row="1" Grid.Column="0"
+                                Background="#0a0a0a" CornerRadius="6"
+                                BorderBrush="#22FFFFFF" BorderThickness="1">
+                            <local:WaveformView x:Name="WaveformPreview"
+                                                IntroSeconds="{Binding IntroSeconds, RelativeSource={RelativeSource AncestorType={x:Type ui:FluentWindow}}}"
+                                                HookSeconds="{Binding HookSeconds, RelativeSource={RelativeSource AncestorType={x:Type ui:FluentWindow}}}"
+                                                OutroSeconds="{Binding OutroSeconds, RelativeSource={RelativeSource AncestorType={x:Type ui:FluentWindow}}}"
+                                                PositionRequested="WaveformPreview_PositionRequested"/>
+                        </Border>
+
+                        <!-- VU meter column, aligned top-to-bottom with waveform -->
+                        <Grid Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"
+                              Margin="12,0,4,0" VerticalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="1" Orientation="Horizontal"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="3,0"
+                                            VerticalAlignment="Center">
+                                    <StackPanel x:Name="LeftMeter" Orientation="Vertical"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="3,0"
+                                            VerticalAlignment="Center">
+                                    <StackPanel x:Name="RightMeter" Orientation="Vertical"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,2">
+                                <TextBlock Text="L" FontSize="11" FontWeight="SemiBold" Margin="10,0,10,0"
+                                           Foreground="{DynamicResource AppSidebarValue}"/>
+                                <TextBlock Text="R" FontSize="11" FontWeight="SemiBold" Margin="10,0,10,0"
+                                           Foreground="{DynamicResource AppSidebarValue}"/>
+                            </StackPanel>
+
+                            <svgc:SvgViewbox Grid.Row="3" Source="/res/window/volume.svg"
+                                             Width="20" Height="20" HorizontalAlignment="Center"
+                                             Margin="0,6,0,0"
+                                             RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Grid>
+
+                        <!-- Transport bar under waveform -->
+                        <Grid Grid.Row="2" Grid.Column="0" Margin="0,10,0,0">
+                            <TextBlock x:Name="PositionText" Text="00:00 / 00:00"
+                                       HorizontalAlignment="Right" VerticalAlignment="Center"
+                                       FontSize="13" FontWeight="SemiBold" TextAlignment="Right"
+                                       Foreground="{DynamicResource AppSidebarValue}"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Button x:Name="PlayPauseButton" Width="36" Height="36" Margin="0,0,6,0"
+                                        Background="Black" Foreground="White"
+                                        BorderThickness="0" Cursor="Hand" ToolTip="Play/Pause"
+                                        Click="PlayPauseButton_Click">
+                                    <Button.Resources>
+                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
+                                    </Button.Resources>
+                                    <svgc:SvgViewbox x:Name="PlayPauseIcon" Source="/res/window/play.svg" Width="16" Height="16"/>
+                                </Button>
+                                <Button x:Name="StopButton" Width="36" Height="36" Margin="0,0,12,0"
+                                        Background="Black" Foreground="White"
+                                        BorderThickness="0" Cursor="Hand" ToolTip="Stop"
+                                        Click="StopButton_Click">
+                                    <Button.Resources>
+                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
+                                    </Button.Resources>
+                                    <svgc:SvgViewbox Source="/res/studio/arrow-left-to-line.svg" Width="14" Height="14"/>
+                                </Button>
+
+                                <Button Content="Set Intro" Height="36" Padding="12,0" Margin="0,0,6,0"
+                                        Background="Black" Foreground="White"
+                                        BorderThickness="0" Cursor="Hand" FontSize="12"
+                                        Click="SetIntroButton_Click">
+                                    <Button.Resources>
+                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
+                                    </Button.Resources>
+                                </Button>
+                                <Button Content="Set Hook" Height="36" Padding="12,0" Margin="0,0,6,0"
+                                        Background="Black" Foreground="White"
+                                        BorderThickness="0" Cursor="Hand" FontSize="12"
+                                        Click="SetHookButton_Click">
+                                    <Button.Resources>
+                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
+                                    </Button.Resources>
+                                </Button>
+                                <Button Content="Set Outro" Height="36" Padding="12,0" Margin="0,0,6,0"
+                                        Background="Black" Foreground="White"
+                                        BorderThickness="0" Cursor="Hand" FontSize="12"
+                                        Click="SetOutroButton_Click">
+                                    <Button.Resources>
+                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
+                                    </Button.Resources>
+                                </Button>
+                                <Button Content="Clear" Height="36" Padding="12,0"
+                                        Background="Black" Foreground="White"
+                                        BorderThickness="0" Cursor="Hand" FontSize="12"
+                                        Click="ClearMarkersButton_Click">
+                                    <Button.Resources>
+                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
+                                    </Button.Resources>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="2" Margin="12,4,14,12">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Border x:Name="ImportButton" BorderThickness="0"
+                        CornerRadius="12" Padding="15,4" Margin="0,0,8,0" Cursor="Hand"
+                        Background="#0067c0"
+                        MouseLeftButtonUp="ImportButton_Click">
+                    <TextBlock Text="Import" Foreground="White" FontSize="12" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                </Border>
+                <Border BorderThickness="1.4" BorderBrush="Gray"
+                        CornerRadius="12" Padding="15,4" Cursor="Hand"
+                        MouseLeftButtonUp="CancelButton_Click">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#22000000"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <TextBlock Text="Cancel" Foreground="Gray" FontSize="12" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

@@ -432,10 +432,12 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Air Time" Binding="{Binding Time}" Width="80"/>
                                 <DataGridTextColumn Header="Length" Binding="{Binding Length}" Width="80"/>
-                                <DataGridTextColumn Header="Event" Binding="{Binding Event}" Width="80"/>
+                                <DataGridTextColumn Header="Event" Binding="{Binding Event}" Width="50"/>
                                 <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
                                 <DataGridTextColumn Header="Intro" Binding="{Binding Intro}" Width="80"/>
-                                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="100"/>
+                                <DataGridTextColumn Header="Outro" Binding="{Binding Outro}" Width="80"/>
+                                <DataGridTextColumn Header="Hook" Binding="{Binding Hook}" Width="80"/>
+                                <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
@@ -459,7 +461,8 @@
                                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                                     <Button Width="40" Height="40" Margin="0,0,8,0" ToolTip="Import File"
                                             Background="Black" Foreground="White"
-                                            BorderThickness="0" Cursor="Hand">
+                                            BorderThickness="0" Cursor="Hand"
+                                            Click="ImportFileButton_Click">
                                         <Button.Resources>
                                             <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
                                         </Button.Resources>
@@ -482,58 +485,27 @@
                                         <svgc:SvgViewbox Source="/res/library/refresh-ccw.svg" Width="20" Height="20"/>
                                     </Button>
                                     </StackPanel>
-                                <ui:TextBox Height="40" VerticalAlignment="Center" PlaceholderText="Search..."/>
+                                <ComboBox Height="40" VerticalAlignment="Center"
+                                          Style="{StaticResource AppComboBoxStyle}"
+                                          SelectedIndex="0">
+                                    <ComboBoxItem Content="All"/>
+                                    <ComboBoxItem Content="Song"/>
+                                    <ComboBoxItem Content="Station ID"/>
+                                    <ComboBoxItem Content="Promo"/>
+                                    <ComboBoxItem Content="Commercial"/>
+                                    <ComboBoxItem Content="News"/>
+                                    <ComboBoxItem Content="Bed"/>
+                                    <ComboBoxItem Content="Voice Track"/>
+                                    <ComboBoxItem Content="Command"/>
+                                </ComboBox>
                             </DockPanel>
 
-                            <UniformGrid Grid.Row="2" Rows="1" Columns="7">
-                                <Button Content="All" Height="40" Margin="4,0" Background="Black" Foreground="White"
-                                        BorderThickness="0" Cursor="Hand">
-                                    <Button.Resources>
-                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
-                                    </Button.Resources>
-                                </Button>
-                                <Button Content="Music" Height="40" Margin="4,0" Background="Black" Foreground="White"
-                                        BorderThickness="0" Cursor="Hand">
-                                    <Button.Resources>
-                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
-                                    </Button.Resources>
-                                </Button>
-                                <Button Content="Jingles" Height="40" Margin="4,0" Background="Black" Foreground="White"
-                                        BorderThickness="0" Cursor="Hand">
-                                    <Button.Resources>
-                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
-                                    </Button.Resources>
-                                </Button>
-                                <Button Content="Spots" Height="40" Margin="4,0" Background="Black" Foreground="White"
-                                        BorderThickness="0" Cursor="Hand">
-                                    <Button.Resources>
-                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
-                                    </Button.Resources>
-                                </Button>
-                                <Button Content="Blocks" Height="40" Margin="4,0" Background="Black" Foreground="White"
-                                        BorderThickness="0" Cursor="Hand">
-                                    <Button.Resources>
-                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
-                                    </Button.Resources>
-                                </Button>
-                                <Button Content="VTs" Height="40" Margin="4,0" Background="Black" Foreground="White"
-                                        BorderThickness="0" Cursor="Hand">
-                                    <Button.Resources>
-                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
-                                    </Button.Resources>
-                                </Button>
-                                <Button Content="Commands" Height="40" Margin="4,0" Background="Black" Foreground="White"
-                                        BorderThickness="0" Cursor="Hand">
-                                    <Button.Resources>
-                                        <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
-                                    </Button.Resources>
-                                </Button>
-                            </UniformGrid>
+                            <ui:TextBox Grid.Row="2" Height="40" VerticalAlignment="Center" PlaceholderText="Search..."/>
                         </Grid>
                     </Border>
                     <Border Grid.Row="1" Margin="6,6,0,8"
                             Background="{DynamicResource AppCardBg}" CornerRadius="8" ClipToBounds="True">
-                        <DataGrid Background="Transparent" BorderThickness="0"
+                        <DataGrid x:Name="LibraryGrid" Background="Transparent" BorderThickness="0"
                                   RowBackground="Transparent" AlternatingRowBackground="Transparent"
                                   Foreground="White"
                                   GridLinesVisibility="Horizontal"
@@ -560,10 +532,11 @@
                             </DataGrid.ColumnHeaderStyle>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Length" Binding="{Binding Length}" Width="80"/>
-                                <DataGridTextColumn Header="Event" Binding="{Binding Event}" Width="80"/>
+                                <DataGridTextColumn Header="Event" Binding="{Binding Event}" Width="50"/>
                                 <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
                                 <DataGridTextColumn Header="Intro" Binding="{Binding Intro}" Width="80"/>
-                                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="100"/>
+                                <DataGridTextColumn Header="Outro" Binding="{Binding Outro}" Width="80"/>
+                                <DataGridTextColumn Header="Hook" Binding="{Binding Hook}" Width="80"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>

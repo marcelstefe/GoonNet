@@ -10,8 +10,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="NAudio" Version="3.1.0" />
+      <PackageReference Include="NAudio.WinMM" Version="3.1.0" />
       <PackageReference Include="SharpVectors.Wpf" Version="1.8.5" />
       <PackageReference Include="WPF-UI" Version="4.3.0" />
+      <PackageReference Include="WPFSVL" Version="1.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -69,17 +72,29 @@
       <None Remove="res\library\trash.svg" />
       <Resource Include="res\library\trash.svg" />
       <None Remove="res\events\ad.svg" />
-      <Resource Include="res\events\spot.svg" />
       <None Remove="res\events\block.svg" />
-      <Resource Include="res\events\block.svg" />
       <None Remove="res\events\command.svg" />
-      <Resource Include="res\events\command.svg" />
       <None Remove="res\events\jingle.svg" />
-      <Resource Include="res\events\jingle.svg" />
       <None Remove="res\events\mic.svg" />
-      <Resource Include="res\events\vt.svg" />
       <None Remove="res\events\music.svg" />
-      <Resource Include="res\events\music.svg" />
+      <None Remove="res\events\bed.svg" />
+      <Resource Include="res\events\bed.svg" />
+      <None Remove="res\events\clock.svg" />
+      <Resource Include="res\events\clock.svg" />
+      <None Remove="res\events\commercial.svg" />
+      <Resource Include="res\events\commercial.svg" />
+      <None Remove="res\events\news.svg" />
+      <Resource Include="res\events\news.svg" />
+      <None Remove="res\events\promotion.svg" />
+      <Resource Include="res\events\promotion.svg" />
+      <None Remove="res\events\station-id.svg" />
+      <Resource Include="res\events\station-id.svg" />
+      <None Remove="res\events\voice-track.svg" />
+      <Resource Include="res\events\voice-track.svg" />
+      <None Remove="res\studio\arrow-left-to-line.svg" />
+      <Resource Include="res\studio\arrow-left-to-line.svg" />
+      <None Remove="res\studio\pause.svg" />
+      <Resource Include="res\studio\pause.svg" />
     </ItemGroup>
 
     <ItemGroup>

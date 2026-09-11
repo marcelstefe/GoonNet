@@ -21,9 +21,13 @@ public partial class MainWindow : FluentWindow
     private readonly DispatcherTimer _clockTimer;
     private SettingsWindow? _settingsWindow;
 
+    public System.Collections.ObjectModel.ObservableCollection<LibraryTrack> LibraryTracks { get; } = new();
+
     public MainWindow()
     {
         InitializeComponent();
+
+        LibraryGrid.ItemsSource = LibraryTracks;
 
         _clockTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _clockTimer.Tick += (_, _) => UpdateClock();
@@ -73,6 +77,25 @@ public partial class MainWindow : FluentWindow
         {
             ManualModeButton.Content = "Auto";
             ManualModeButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#22c55e"));
+        }
+    }
+
+    private ImportFileWindow? _importFileWindow;
+
+    private void ImportFileButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_importFileWindow is { IsVisible: true })
+        {
+            _importFileWindow.Activate();
+            return;
+        }
+
+        var win = new ImportFileWindow { Owner = this };
+        _importFileWindow = win;
+        win.Closed += (_, _) => _importFileWindow = null;
+        if (win.ShowDialog() == true && win.Result is { } track)
+        {
+            LibraryTracks.Add(track);
         }
     }
 

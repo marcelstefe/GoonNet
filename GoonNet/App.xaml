@@ -41,6 +41,123 @@
             <SolidColorBrush x:Key="AppDividerLine"     Color="#999999"/>
             <SolidColorBrush x:Key="AppTabActive"       Color="#FFFFFF"/>
             <SolidColorBrush x:Key="AppNavText"         Color="#FFFFFF"/>
+
+            <SolidColorBrush x:Key="AppComboBoxBg" Color="Black"/>
+            <SolidColorBrush x:Key="AppComboBoxHover" Color="#1F1F1F"/>
+            <SolidColorBrush x:Key="AppComboBoxPopupBg" Color="#111111"/>
+            <SolidColorBrush x:Key="AppComboBoxItemHover" Color="#2A2A2A"/>
+
+            <Style x:Key="AppComboToggleStyle" TargetType="ToggleButton">
+                <Setter Property="Focusable" Value="False"/>
+                <Setter Property="ClickMode" Value="Press"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Border x:Name="Root"
+                                    Background="{StaticResource AppComboBoxBg}"
+                                    CornerRadius="8"
+                                    BorderThickness="0"
+                                    SnapsToDevicePixels="True">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentPresenter Grid.Column="0"
+                                                      Margin="12,0,0,0"
+                                                      HorizontalAlignment="Left"
+                                                      VerticalAlignment="Center"/>
+                                    <Path Grid.Column="1"
+                                          Margin="10,0,12,0"
+                                          Width="10" Height="6"
+                                          Data="M 0,0 L 5,5 L 10,0 Z"
+                                          Fill="White"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Root" Property="Background" Value="{StaticResource AppComboBoxHover}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="AppComboBoxItemStyle" TargetType="ComboBoxItem">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Padding" Value="12,8"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ComboBoxItem">
+                            <Border x:Name="Bd"
+                                    Background="Transparent"
+                                    CornerRadius="6"
+                                    Margin="4,2"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="{StaticResource AppComboBoxItemHover}"/>
+                                </Trigger>
+                                <Trigger Property="IsHighlighted" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="{StaticResource AppComboBoxItemHover}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="AppComboBoxStyle" TargetType="ComboBox">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Background" Value="{StaticResource AppComboBoxBg}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="ItemContainerStyle" Value="{StaticResource AppComboBoxItemStyle}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ComboBox">
+                            <Grid>
+                                <ToggleButton x:Name="ToggleButton"
+                                              Style="{StaticResource AppComboToggleStyle}"
+                                              Foreground="White"
+                                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ContentPresenter x:Name="ContentSite"
+                                                      Content="{TemplateBinding SelectionBoxItem}"
+                                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                      TextBlock.Foreground="White"
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="Left"/>
+                                </ToggleButton>
+                                <Popup x:Name="Popup"
+                                       Placement="Bottom"
+                                       IsOpen="{TemplateBinding IsDropDownOpen}"
+                                       AllowsTransparency="True"
+                                       Focusable="False"
+                                       PopupAnimation="Slide">
+                                    <Border Background="{StaticResource AppComboBoxPopupBg}"
+                                            CornerRadius="8"
+                                            BorderThickness="0"
+                                            MinWidth="{TemplateBinding ActualWidth}"
+                                            MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                            Margin="0,4,0,0">
+                                        <ScrollViewer SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True" Margin="0,4"/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
