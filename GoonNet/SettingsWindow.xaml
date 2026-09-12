@@ -117,17 +117,8 @@
                     </Border>
                     <Border BorderThickness="1.4" BorderBrush="Gray"
                             CornerRadius="12" Padding="15,4" Cursor="Hand"
+                            Style="{StaticResource AppSecondaryPillStyle}"
                             MouseLeftButtonUp="CloseButton_Click">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#22000000"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
                         <TextBlock Text="Close" Foreground="Gray" FontSize="12" VerticalAlignment="Center" IsHitTestVisible="False"/>
                     </Border>
                 </StackPanel>

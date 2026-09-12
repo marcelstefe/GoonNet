@@ -20,8 +20,59 @@
             <Style TargetType="ComboBox">
                 <Setter Property="FontFamily" Value="{StaticResource InterFont}"/>
             </Style>
+            <!-- Plain buttons (black transport/action buttons, grid row icons): rounded, with the
+                 same hover/pressed tint whatever their background colour. -->
             <Style TargetType="Button">
                 <Setter Property="FontFamily" Value="{StaticResource InterFont}"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="8"/>
+                                <Border x:Name="Tint" Background="White" Opacity="0" CornerRadius="8"/>
+                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  RecognizesAccessKey="True"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Tint" Property="Opacity" Value="0.12"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Tint" Property="Opacity" Value="0.2"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.4"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Blue text pills (Save / Import); hover matches the Settings Save button -->
+            <Style x:Key="AppPrimaryPillStyle" TargetType="Border">
+                <Setter Property="Background" Value="#0067c0"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#00559f"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!-- Outlined text pills (Cancel / Close) -->
+            <Style x:Key="AppSecondaryPillStyle" TargetType="Border">
+                <Setter Property="Background" Value="Transparent"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#1FFFFFFF"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
             <Style TargetType="Label">
                 <Setter Property="FontFamily" Value="{StaticResource InterFont}"/>

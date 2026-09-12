@@ -24,6 +24,84 @@
     <ui:FluentWindow.FontFamily>pack://application:,,,/fonts/#Inter-VariableFont_opsz,wght</ui:FluentWindow.FontFamily>
     <ui:FluentWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <local:EventIconConverter x:Key="EventIcon"/>
+        <local:EventColorConverter x:Key="EventColor"/>
+
+        <!-- Full-line progress fill used as a player line's background -->
+        <Style x:Key="PlayerLineProgress" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Maximum" Value="1"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="#16a34a"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Border x:Name="PART_Track"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8">
+                            <Border x:Name="PART_Indicator"
+                                    Background="{TemplateBinding Foreground}"
+                                    CornerRadius="8"
+                                    HorizontalAlignment="Left"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- One top-panel player line, bound to a PlayerSlot -->
+        <DataTemplate x:Key="PlayerLineTemplate">
+            <Grid>
+                <!-- Progress through the current part (intro / main / outro), across the whole line;
+                     it restarts at each part and turns red in the outro -->
+                <ProgressBar x:Name="LineProgress" Style="{StaticResource PlayerLineProgress}"
+                             Value="{Binding PartProgress, Mode=OneWay}"/>
+
+                <Grid Margin="14,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Event icon -->
+                    <svgc:SvgViewbox Grid.Column="0"
+                                     Source="{Binding EventName, Converter={StaticResource EventIcon}}"
+                                     Width="18" Height="18" VerticalAlignment="Center" Margin="0,0,12,0"
+                                     RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                    <!-- Title + artist (the title trims first; the artist gets what's left) -->
+                    <DockPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock x:Name="TitleText" DockPanel.Dock="Left"
+                                   Text="{Binding Title}"
+                                   Foreground="{Binding EventName, Converter={StaticResource EventColor}}"
+                                   FontWeight="SemiBold" FontSize="14"
+                                   TextTrimming="CharacterEllipsis"/>
+                        <TextBlock x:Name="ArtistText" Margin="8,0,0,0"
+                                   Text="{Binding Artist}" Opacity="0.55"
+                                   Foreground="{Binding EventName, Converter={StaticResource EventColor}}"
+                                   FontSize="14"
+                                   TextTrimming="CharacterEllipsis"/>
+                    </DockPanel>
+
+                    <!-- Countdown for the current part, right-aligned -->
+                    <TextBlock Grid.Column="2" Text="{Binding Countdown}"
+                               Margin="14,0,0,0" MinWidth="54" VerticalAlignment="Center"
+                               TextAlignment="Right"
+                               FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+                </Grid>
+            </Grid>
+            <DataTemplate.Triggers>
+                <!-- Outro: the bar turns red -->
+                <DataTrigger Binding="{Binding IsInOutro}" Value="True">
+                    <Setter TargetName="LineProgress" Property="Foreground" Value="#dc2626"/>
+                </DataTrigger>
+                <!-- On air: title and artist go white so they read over the progress fill -->
+                <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                    <Setter TargetName="TitleText" Property="Foreground" Value="White"/>
+                    <Setter TargetName="ArtistText" Property="Foreground" Value="White"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
 
         <Style TargetType="{x:Type ui:TitleBarButton}"
                BasedOn="{StaticResource {x:Type ui:TitleBarButton}}">
@@ -197,77 +275,17 @@
                     <StackPanel DockPanel.Dock="Bottom" Orientation="Vertical" HorizontalAlignment="Center" Margin="8,0,0,0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-                        <!-- Left channel -->
+                        <!-- Left channel (LEDs built in code: BuildVuMeter) -->
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="4,0,4,0">
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                <Ellipse Width="10" Height="10" Fill="{DynamicResource AppCardBg}" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="{DynamicResource AppCardBg}" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="{DynamicResource AppCardBg}" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="{DynamicResource AppCardBg}" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#ef4444" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#ef4444" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#eab308" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#eab308" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#eab308" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,0"/>
-                            </StackPanel>
+                            <StackPanel x:Name="VuLeftLeds" Orientation="Vertical" HorizontalAlignment="Center"/>
                             <TextBlock Text="L" FontSize="11" FontWeight="SemiBold"
                                        HorizontalAlignment="Center" Margin="0,6,0,0"
                                        Foreground="{DynamicResource AppSidebarValue}"/>
                         </StackPanel>
 
-                        <!-- Right channel -->
+                        <!-- Right channel (LEDs built in code: BuildVuMeter) -->
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="4,0,4,0">
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                <Ellipse Width="10" Height="10" Fill="{DynamicResource AppCardBg}" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="{DynamicResource AppCardBg}" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="{DynamicResource AppCardBg}" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="{DynamicResource AppCardBg}" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="{DynamicResource AppCardBg}" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="{DynamicResource AppCardBg}" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="{DynamicResource AppCardBg}" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#eab308" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#eab308" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>
-                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,3"/>                                <Ellipse Width="10" Height="10" Fill="#22c55e" Margin="0,0,0,0"/>
-                            </StackPanel>
+                            <StackPanel x:Name="VuRightLeds" Orientation="Vertical" HorizontalAlignment="Center"/>
                             <TextBlock Text="R" FontSize="11" FontWeight="SemiBold"
                                        HorizontalAlignment="Center" Margin="0,6,0,0"
                                        Foreground="{DynamicResource AppSidebarValue}"/>
@@ -331,10 +349,18 @@
                                 <RowDefinition Height="12"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Border Grid.Row="0" Background="Black" CornerRadius="8"/>
-                            <Border Grid.Row="2" Background="Black" CornerRadius="8"/>
-                            <Border Grid.Row="4" Background="Black" CornerRadius="8"/>
-                            <Border Grid.Row="6" Background="Black" CornerRadius="8"/>
+                            <ContentControl x:Name="Player0Host" Grid.Row="0"
+                                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                            ContentTemplate="{StaticResource PlayerLineTemplate}"/>
+                            <ContentControl x:Name="Player1Host" Grid.Row="2"
+                                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                            ContentTemplate="{StaticResource PlayerLineTemplate}"/>
+                            <ContentControl x:Name="Player2Host" Grid.Row="4"
+                                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                            ContentTemplate="{StaticResource PlayerLineTemplate}"/>
+                            <ContentControl x:Name="Player3Host" Grid.Row="6"
+                                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                            ContentTemplate="{StaticResource PlayerLineTemplate}"/>
                         </Grid>
 
                         <Grid Grid.Column="1" VerticalAlignment="Stretch" Margin="12,0,0,0">
@@ -348,9 +374,10 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <Button Grid.Row="0" Width="72" ToolTip="Play Next"
+                            <Button Grid.Row="0" Width="72" x:Name="PlayNextButton" ToolTip="Play Next"
                                     Background="Black" Foreground="White"
-                                    BorderThickness="0" Cursor="Hand">
+                                    BorderThickness="0" Cursor="Hand"
+                                    Click="PlayNextButton_Click">
                                 <Button.Resources>
                                     <Style TargetType="Border">
                                         <Setter Property="CornerRadius" Value="8"/>
@@ -361,7 +388,8 @@
 
                             <Button Grid.Row="2" Width="72" x:Name="SecondaryActionButton" ToolTip="Fade Out"
                                     Background="Black" Foreground="White"
-                                    BorderThickness="0" Cursor="Hand">
+                                    BorderThickness="0" Cursor="Hand"
+                                    Click="FadeOutButton_Click">
                                 <Button.Resources>
                                     <Style TargetType="Border">
                                         <Setter Property="CornerRadius" Value="8"/>
@@ -404,11 +432,13 @@
                     </Grid.RowDefinitions>
                     <Border Grid.Row="1" Margin="0,6,6,6"
                             Background="{DynamicResource AppCardBg}" CornerRadius="8" ClipToBounds="True">
-                        <DataGrid Background="Transparent" BorderThickness="0"
+                        <DataGrid x:Name="ScheduleGrid" Background="Transparent" BorderThickness="0"
+                                  PreviewMouseLeftButtonDown="ScheduleGrid_PreviewMouseLeftButtonDown"
+                                  MouseMove="ScheduleGrid_MouseMove"
                                   RowBackground="Transparent" AlternatingRowBackground="Transparent"
                                   Foreground="White"
-                                  GridLinesVisibility="Horizontal"
-                                  HorizontalGridLinesBrush="#22FFFFFF"
+                                  GridLinesVisibility="None"
+                                  RowHeight="24"
                                   HeadersVisibility="Column"
                                   CanUserResizeColumns="True"
                                   CanUserResizeRows="False"
@@ -416,6 +446,11 @@
                                   CanUserSortColumns="False"
                                   CanUserAddRows="False"
                                   AutoGenerateColumns="False"
+                                  AllowDrop="True"
+                                  DragOver="ScheduleGrid_DragOver"
+                                  Drop="ScheduleGrid_Drop"
+                                  BeginningEdit="ScheduleGrid_BeginningEdit"
+                                  SelectionChanged="ScheduleGrid_SelectionChanged"
                                   Margin="8">
                             <DataGrid.ColumnHeaderStyle>
                                 <Style TargetType="dgprim:DataGridColumnHeader">
@@ -429,15 +464,124 @@
                                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
                                 </Style>
                             </DataGrid.ColumnHeaderStyle>
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                                    <Setter Property="Foreground"
+                                            Value="{Binding Event, Converter={StaticResource EventColor}}"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <!-- Row details (the insert hint) are hidden here and shown only by the
+                                         ShowInsertHint trigger below. Don't set RowDetailsVisibilityMode on the
+                                         grid: a value set there takes priority over this style and hides them all. -->
+                                    <Setter Property="DetailsVisibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#1A1A1A"/>
+                                        </Trigger>
+                                        <!-- Fixed rows (hour markers): no hover highlight -->
+                                        <DataTrigger Binding="{Binding IsEditable}" Value="False">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                        </DataTrigger>
+                                        <!-- Empty hour: show the insert hint line under the marker -->
+                                        <DataTrigger Binding="{Binding ShowInsertHint}" Value="True">
+                                            <Setter Property="DetailsVisibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+                            <!-- Under an empty hour marker: arrow below the clock icon, text lined up with the titles.
+                                 Dropping a track here puts it into that hour. -->
+                            <DataGrid.RowDetailsTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Height="24" Margin="188,0,0,0">
+                                        <svgc:SvgViewbox Source="/res/studio/corner-down-right.svg"
+                                                         Width="14" Height="14" VerticalAlignment="Center"
+                                                         RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        <TextBlock Text="Insert Tracks Here..." Margin="26,0,0,0"
+                                                   VerticalAlignment="Center" FontSize="12" Foreground="#808080"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGrid.RowDetailsTemplate>
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Padding" Value="8,0"/>
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridCell">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        Padding="{TemplateBinding Padding}"
+                                                        SnapsToDevicePixels="True">
+                                                    <ContentPresenter VerticalAlignment="Center"
+                                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#454545"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.CellStyle>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Air Time" Binding="{Binding Time}" Width="80"/>
+                                <DataGridTextColumn Header="Air Time" Binding="{Binding AirTime, Mode=OneWay}" IsReadOnly="True" Width="90"/>
                                 <DataGridTextColumn Header="Length" Binding="{Binding Length}" Width="80"/>
-                                <DataGridTextColumn Header="Event" Binding="{Binding Event}" Width="50"/>
-                                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
+                                <DataGridTemplateColumn Header="Event" Width="50">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <svgc:SvgViewbox Source="{Binding Event, Converter={StaticResource EventIcon}}"
+                                                             Width="15" Height="15"
+                                                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                             ToolTip="{Binding Event}"
+                                                             RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Title" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding Artist}" Opacity="0.55"
+                                                           Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="Intro" Binding="{Binding Intro}" Width="80"/>
                                 <DataGridTextColumn Header="Outro" Binding="{Binding Outro}" Width="80"/>
                                 <DataGridTextColumn Header="Hook" Binding="{Binding Hook}" Width="80"/>
                                 <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*"/>
+                                <DataGridTemplateColumn Header="" Width="72">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                                                        VerticalAlignment="Center"
+                                                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource BoolToVis}}">
+                                                <Button Width="20" Height="20" Margin="0,0,2,0" ToolTip="Mix with next item"
+                                                        Visibility="{Binding HasAudio, Converter={StaticResource BoolToVis}}"
+                                                        Background="Transparent" BorderThickness="0" Padding="0"
+                                                        Cursor="Hand" Click="PlaylistEditButton_Click">
+                                                    <svgc:SvgViewbox Source="/res/studio/audio-lines.svg" Width="12" Height="12"/>
+                                                </Button>
+                                                <Button Width="20" Height="20" ToolTip="Remove"
+                                                        Background="Transparent" BorderThickness="0" Padding="0"
+                                                        Cursor="Hand" Click="PlaylistRemoveButton_Click"
+                                                        Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}">
+                                                    <svgc:SvgViewbox Source="/res/studio/trash.svg" Width="12" Height="12"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
@@ -485,9 +629,10 @@
                                         <svgc:SvgViewbox Source="/res/library/refresh-ccw.svg" Width="20" Height="20"/>
                                     </Button>
                                     </StackPanel>
-                                <ComboBox Height="40" VerticalAlignment="Center"
+                                <ComboBox x:Name="LibraryTypeFilter" Height="40" VerticalAlignment="Center"
                                           Style="{StaticResource AppComboBoxStyle}"
-                                          SelectedIndex="0">
+                                          SelectedIndex="0"
+                                          SelectionChanged="LibraryTypeFilter_SelectionChanged">
                                     <ComboBoxItem Content="All"/>
                                     <ComboBoxItem Content="Song"/>
                                     <ComboBoxItem Content="Station ID"/>
@@ -500,16 +645,21 @@
                                 </ComboBox>
                             </DockPanel>
 
-                            <ui:TextBox Grid.Row="2" Height="40" VerticalAlignment="Center" PlaceholderText="Search..."/>
+                            <ui:TextBox Grid.Row="2" x:Name="LibrarySearchBox" Height="40" VerticalAlignment="Center"
+                                        PlaceholderText="Search..."
+                                        TextChanged="LibrarySearchBox_TextChanged"/>
                         </Grid>
                     </Border>
                     <Border Grid.Row="1" Margin="6,6,0,8"
                             Background="{DynamicResource AppCardBg}" CornerRadius="8" ClipToBounds="True">
                         <DataGrid x:Name="LibraryGrid" Background="Transparent" BorderThickness="0"
+                                  BeginningEdit="LibraryGrid_BeginningEdit"
+                                  PreviewMouseLeftButtonDown="LibraryGrid_PreviewMouseLeftButtonDown"
+                                  MouseMove="LibraryGrid_MouseMove"
                                   RowBackground="Transparent" AlternatingRowBackground="Transparent"
                                   Foreground="White"
-                                  GridLinesVisibility="Horizontal"
-                                  HorizontalGridLinesBrush="#22FFFFFF"
+                                  GridLinesVisibility="None"
+                                  RowHeight="24"
                                   HeadersVisibility="Column"
                                   CanUserResizeColumns="True"
                                   CanUserResizeRows="False"
@@ -530,13 +680,97 @@
                                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
                                 </Style>
                             </DataGrid.ColumnHeaderStyle>
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                                    <Setter Property="Foreground"
+                                            Value="{Binding Event, Converter={StaticResource EventColor}}"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#1A1A1A"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Padding" Value="8,0"/>
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridCell">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        Padding="{TemplateBinding Padding}"
+                                                        SnapsToDevicePixels="True">
+                                                    <ContentPresenter VerticalAlignment="Center"
+                                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#454545"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.CellStyle>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Length" Binding="{Binding Length}" Width="80"/>
-                                <DataGridTextColumn Header="Event" Binding="{Binding Event}" Width="50"/>
-                                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
+                                <DataGridTemplateColumn Header="Event" Width="50">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <svgc:SvgViewbox Source="{Binding Event, Converter={StaticResource EventIcon}}"
+                                                             Width="15" Height="15"
+                                                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                             ToolTip="{Binding Event}"
+                                                             RenderOptions.BitmapScalingMode="HighQuality"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Title" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding Artist}" Opacity="0.55"
+                                                           Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="Intro" Binding="{Binding Intro}" Width="80"/>
                                 <DataGridTextColumn Header="Outro" Binding="{Binding Outro}" Width="80"/>
                                 <DataGridTextColumn Header="Hook" Binding="{Binding Hook}" Width="80"/>
+                                <DataGridTemplateColumn Header="" Width="72">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                                                        VerticalAlignment="Center"
+                                                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource BoolToVis}}">
+                                                <Button Width="20" Height="20" Margin="0,0,2,0" ToolTip="Edit"
+                                                        Background="Transparent" BorderThickness="0" Padding="0"
+                                                        Cursor="Hand" Click="EditTrackButton_Click"
+                                                        Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}">
+                                                    <svgc:SvgViewbox Source="/res/studio/edit.svg" Width="12" Height="12"/>
+                                                </Button>
+                                                <Button Width="20" Height="20" ToolTip="Remove"
+                                                        Background="Transparent" BorderThickness="0" Padding="0"
+                                                        Cursor="Hand" Click="RemoveTrackButton_Click"
+                                                        Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}">
+                                                    <svgc:SvgViewbox Source="/res/studio/trash.svg" Width="12" Height="12"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>

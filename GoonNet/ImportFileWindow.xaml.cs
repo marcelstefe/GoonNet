@@ -147,7 +147,7 @@ public partial class ImportFileWindow : FluentWindow
 
     private static string Fmt(double s)
     {
-        if (double.IsNaN(s) || s < 0) return "--:--";
+        if (double.IsNaN(s) || s < 0) return "";
         var t = TimeSpan.FromSeconds(s);
         return t.ToString(@"mm\:ss");
     }
@@ -247,6 +247,45 @@ public partial class ImportFileWindow : FluentWindow
         Result = BuildTrack();
         DialogResult = true;
         Close();
+    }
+
+    /// <summary>Pre-populate the dialog with an existing track so it can be edited.</summary>
+    public void LoadForEdit(LibraryTrack track)
+    {
+        FilePathBox.Text = track.FilePath;
+        ArtistBox.Text = track.Artist;
+        TitleBox.Text = track.Title;
+        NoteBox.Text = track.Note;
+
+        foreach (var item in CategoryBox.Items.OfType<ComboBoxItem>())
+        {
+            if (string.Equals(item.Content?.ToString(), track.Event, StringComparison.OrdinalIgnoreCase))
+            {
+                CategoryBox.SelectedItem = item;
+                break;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(track.FilePath) && System.IO.File.Exists(track.FilePath))
+        {
+            try { _previewPlayer.Load(track.FilePath); }
+            catch { /* preview is best-effort when editing */ }
+        }
+
+        IntroSeconds = ParseSeconds(track.Intro);
+        HookSeconds = ParseSeconds(track.Hook);
+        OutroSeconds = ParseSeconds(track.Outro);
+        UpdatePositionText();
+        UpdateTimingHeader();
+    }
+
+    private static double ParseSeconds(string? text)
+    {
+        if (string.IsNullOrWhiteSpace(text) || text == "--:--") return double.NaN;
+        return TimeSpan.TryParseExact(text, @"mm\:ss",
+            System.Globalization.CultureInfo.InvariantCulture, out var ts)
+            ? ts.TotalSeconds
+            : double.NaN;
     }
 
     public LibraryTrack? Result { get; private set; }

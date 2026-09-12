@@ -59,6 +59,10 @@
       <Resource Include="res\studio\skip-forward.svg" />
       <None Remove="res\studio\square.svg" />
       <Resource Include="res\studio\square.svg" />
+      <None Remove="res\studio\edit.svg" />
+      <Resource Include="res\studio\edit.svg" />
+      <None Remove="res\studio\trash.svg" />
+      <Resource Include="res\studio\trash.svg" />
       <None Remove="res\library\folder-down.svg" />
       <Resource Include="res\library\folder-down.svg" />
       <None Remove="res\library\plus.svg" />
@@ -74,9 +78,11 @@
       <None Remove="res\events\ad.svg" />
       <None Remove="res\events\block.svg" />
       <None Remove="res\events\command.svg" />
+      <Resource Include="res\events\command.svg" />
       <None Remove="res\events\jingle.svg" />
       <None Remove="res\events\mic.svg" />
       <None Remove="res\events\music.svg" />
+      <Resource Include="res\events\music.svg" />
       <None Remove="res\events\bed.svg" />
       <Resource Include="res\events\bed.svg" />
       <None Remove="res\events\clock.svg" />
@@ -95,6 +101,10 @@
       <Resource Include="res\studio\arrow-left-to-line.svg" />
       <None Remove="res\studio\pause.svg" />
       <Resource Include="res\studio\pause.svg" />
+      <None Remove="res\studio\audio-lines.svg" />
+      <Resource Include="res\studio\audio-lines.svg" />
+      <None Remove="res\studio\corner-down-right.svg" />
+      <Resource Include="res\studio\corner-down-right.svg" />
     </ItemGroup>
 
     <ItemGroup>

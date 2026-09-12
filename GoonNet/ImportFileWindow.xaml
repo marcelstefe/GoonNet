@@ -6,7 +6,8 @@
                  xmlns:local="clr-namespace:GoonNet"
                  xmlns:svl="clr-namespace:WPFSoundVisualizationLib;assembly=WPFSoundVisualizationLib"
                  Title="Import File"
-                 Width="1000" Height="775"
+                 Width="1000"
+                 SizeToContent="Height"
                  ResizeMode="NoResize"
                  WindowStartupLocation="CenterOwner"
                  ShowInTaskbar="True"
@@ -75,13 +76,56 @@
                 <ui:TextBox x:Name="NoteBox" Height="100" Margin="0,0,0,16"
                             PlaceholderText="Optional Note..."/>
 
+                <!-- Timing header (Length / Intro / Hook / Outro) above the track editor -->
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Length" FontSize="13"
+                               Margin="0,0,0,4" Foreground="{DynamicResource AppSidebarValue}"/>
+                    <ui:TextBox Grid.Row="1" Grid.Column="0" x:Name="LengthText" Text=""
+                                Height="35" IsReadOnly="True"
+                                HorizontalContentAlignment="Center" FontWeight="SemiBold"/>
+
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Intro" FontSize="13"
+                               Margin="0,0,0,4" Foreground="White"/>
+                    <ui:TextBox Grid.Row="1" Grid.Column="2" x:Name="IntroText" Text=""
+                                Height="35" IsReadOnly="True"
+                                HorizontalContentAlignment="Center" FontWeight="SemiBold"
+                                Foreground="#22c55e"/>
+
+                    <TextBlock Grid.Row="0" Grid.Column="4" Text="Hook" FontSize="13"
+                               Margin="0,0,0,4" Foreground="White"/>
+                    <ui:TextBox Grid.Row="1" Grid.Column="4" x:Name="HookText" Text=""
+                                Height="35" IsReadOnly="True"
+                                HorizontalContentAlignment="Center" FontWeight="SemiBold"
+                                Foreground="#eab308"/>
+
+                    <TextBlock Grid.Row="0" Grid.Column="6" Text="Outro" FontSize="13"
+                               Margin="0,0,0,4" Foreground="White"/>
+                    <ui:TextBox Grid.Row="1" Grid.Column="6" x:Name="OutroText" Text=""
+                                Height="35" IsReadOnly="True"
+                                HorizontalContentAlignment="Center" FontWeight="SemiBold"
+                                Foreground="#ef4444"/>
+                </Grid>
+
                 <TextBlock Text="Track Editor" FontSize="13" Margin="0,0,0,6"/>
 
                 <Border BorderBrush="#33FFFFFF" BorderThickness="1" CornerRadius="8"
                         Background="#0f0f0f" Padding="10">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
@@ -90,52 +134,8 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Timing header spanning both columns -->
-                        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="4,0,4,8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="8"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="8"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="8"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Length" FontSize="12" Opacity="0.7"
-                                       Margin="0,0,0,4" Foreground="{DynamicResource AppSidebarValue}"/>
-                            <ui:TextBox Grid.Row="1" Grid.Column="0" x:Name="LengthText" Text="--:--"
-                                        Height="35" IsReadOnly="True"
-                                        HorizontalContentAlignment="Center" FontWeight="SemiBold"/>
-
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Intro" FontSize="12" Opacity="0.7"
-                                       Margin="0,0,0,4" Foreground="White"/>
-                            <ui:TextBox Grid.Row="1" Grid.Column="2" x:Name="IntroText" Text="--:--"
-                                        Height="35" IsReadOnly="True"
-                                        HorizontalContentAlignment="Center" FontWeight="SemiBold"
-                                        Foreground="#22c55e"/>
-
-                            <TextBlock Grid.Row="0" Grid.Column="4" Text="Hook" FontSize="12" Opacity="0.7"
-                                       Margin="0,0,0,4" Foreground="White"/>
-                            <ui:TextBox Grid.Row="1" Grid.Column="4" x:Name="HookText" Text="--:--"
-                                        Height="35" IsReadOnly="True"
-                                        HorizontalContentAlignment="Center" FontWeight="SemiBold"
-                                        Foreground="#eab308"/>
-
-                            <TextBlock Grid.Row="0" Grid.Column="6" Text="Outro" FontSize="12" Opacity="0.7"
-                                       Margin="0,0,0,4" Foreground="White"/>
-                            <ui:TextBox Grid.Row="1" Grid.Column="6" x:Name="OutroText" Text="--:--"
-                                        Height="35" IsReadOnly="True"
-                                        HorizontalContentAlignment="Center" FontWeight="SemiBold"
-                                        Foreground="#ef4444"/>
-                        </Grid>
-
                         <!-- Waveform -->
-                        <Border Grid.Row="1" Grid.Column="0"
+                        <Border Grid.Row="0" Grid.Column="0"
                                 Background="#0a0a0a" CornerRadius="6"
                                 BorderBrush="#22FFFFFF" BorderThickness="1">
                             <local:WaveformView x:Name="WaveformPreview"
@@ -146,8 +146,8 @@
                         </Border>
 
                         <!-- VU meter column, aligned top-to-bottom with waveform -->
-                        <Grid Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"
-                              Margin="12,0,4,0" VerticalAlignment="Stretch">
+                        <Grid Grid.Row="0" Grid.Column="1"
+                              Margin="6,0,2,0" VerticalAlignment="Stretch">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
@@ -170,9 +170,11 @@
                             </StackPanel>
 
                             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,2">
-                                <TextBlock Text="L" FontSize="11" FontWeight="SemiBold" Margin="10,0,10,0"
+                                <TextBlock Text="L" FontSize="11" FontWeight="SemiBold" Width="8" Margin="3,0"
+                                           TextAlignment="Center"
                                            Foreground="{DynamicResource AppSidebarValue}"/>
-                                <TextBlock Text="R" FontSize="11" FontWeight="SemiBold" Margin="10,0,10,0"
+                                <TextBlock Text="R" FontSize="11" FontWeight="SemiBold" Width="8" Margin="3,0"
+                                           TextAlignment="Center"
                                            Foreground="{DynamicResource AppSidebarValue}"/>
                             </StackPanel>
 
@@ -183,8 +185,9 @@
                         </Grid>
 
                         <!-- Transport bar under waveform -->
-                        <Grid Grid.Row="2" Grid.Column="0" Margin="0,10,0,0">
+                        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10,0,0">
                             <TextBlock x:Name="PositionText" Text="00:00 / 00:00"
+                                       Margin="0,0,4,0"
                                        HorizontalAlignment="Right" VerticalAlignment="Center"
                                        FontSize="13" FontWeight="SemiBold" TextAlignment="Right"
                                        Foreground="{DynamicResource AppSidebarValue}"/>
@@ -251,23 +254,14 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Border x:Name="ImportButton" BorderThickness="0"
                         CornerRadius="12" Padding="15,4" Margin="0,0,8,0" Cursor="Hand"
-                        Background="#0067c0"
+                        Style="{StaticResource AppPrimaryPillStyle}"
                         MouseLeftButtonUp="ImportButton_Click">
                     <TextBlock Text="Import" Foreground="White" FontSize="12" VerticalAlignment="Center" IsHitTestVisible="False"/>
                 </Border>
                 <Border BorderThickness="1.4" BorderBrush="Gray"
                         CornerRadius="12" Padding="15,4" Cursor="Hand"
+                        Style="{StaticResource AppSecondaryPillStyle}"
                         MouseLeftButtonUp="CancelButton_Click">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#22000000"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
                     <TextBlock Text="Cancel" Foreground="Gray" FontSize="12" VerticalAlignment="Center" IsHitTestVisible="False"/>
                 </Border>
             </StackPanel>
