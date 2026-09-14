@@ -45,8 +45,15 @@ public partial class MainWindow : FluentWindow
         // Built-in commands, listed under the "Command" type.
         LibraryTracks.Add(new LibraryTrack { Event = "Command", Title = "Fixed Time Marker", Template = CommandKind.FixedTimeMarker });
         LibraryTracks.Add(new LibraryTrack { Event = "Command", Title = "Wait", Template = CommandKind.Wait });
+        LibraryTracks.Add(new LibraryTrack { Event = "Command", Title = "Note", Template = CommandKind.Note });
 
         ScheduleGrid.ItemsSource = PlaylistTracks;
+
+        // Keep the insert hint lined up with the columns as they're resized or reordered.
+        var columnWidth = DependencyPropertyDescriptor.FromProperty(DataGridColumn.ActualWidthProperty, typeof(DataGridColumn));
+        foreach (var column in ScheduleGrid.Columns)
+            columnWidth.AddValueChanged(column, (_, _) => UpdateInsertHintLayout());
+        ScheduleGrid.ColumnReordered += (_, _) => UpdateInsertHintLayout();
 
         Player0Host.Content = _players[0];
         Player1Host.Content = _players[1];
@@ -253,8 +260,12 @@ public partial class MainWindow : FluentWindow
                 var kind = source.Template;
                 Dispatcher.InvokeAsync(() =>
                 {
-                    if (kind == CommandKind.Wait) InsertWait(before, hour);
-                    else InsertFixedTimeMarker(before, hour);
+                    switch (kind)
+                    {
+                        case CommandKind.Wait: InsertWait(before, hour); break;
+                        case CommandKind.Note: InsertNote(before); break;
+                        default: InsertFixedTimeMarker(before, hour); break;
+                    }
                 });
                 return;
             }
@@ -334,25 +345,35 @@ public partial class MainWindow : FluentWindow
         return current as T;
     }
 
-    // ---------- Top-panel players (on-air item, then the next playlist items) ----------
+    // ---------- Top-panel players (items playing, then the next playlist items) ----------
+    // An item keeps its line until its audio has fully stopped: one mixed under the next item
+    // (or fading after a skip) stays above it, in the order they started.
     private void SyncPlayers()
     {
-        var onAirTrack = _onAir?.Track;
-        var lineup = new List<LibraryTrack>(_players.Length);
-        if (onAirTrack is not null) lineup.Add(onAirTrack);
+        var playing = _tails.Select(d => d.Track).ToList();
+        if (_onAir is { } onAir) playing.Add(onAir.Track);
+
+        var lineup = playing.Take(_players.Length).ToList();
         foreach (var t in PlaylistTracks)
         {
             if (lineup.Count == _players.Length) break;
-            if (!ReferenceEquals(t, onAirTrack) && !IsTail(t) && t.IsPlayable) lineup.Add(t);
+            if (!playing.Contains(t) && t.IsPlayable) lineup.Add(t);
         }
 
         for (int i = 0; i < _players.Length; i++)
         {
+            var slot = _players[i];
             var track = i < lineup.Count ? lineup[i] : null;
-            if (!ReferenceEquals(_players[i].Track, track))
-                _players[i].Track = track;
+            if (!ReferenceEquals(slot.Track, track)) slot.Track = track;
+            var deck = track is null ? null : DeckFor(track);
+            slot.IsPlaying = deck is not null;
+            // Now rather than on the next tick, so a line moving up doesn't flash back to the start.
+            if (deck is not null) slot.Elapsed = deck.Elapsed.TotalSeconds;
         }
-        _players[0].IsPlaying = onAirTrack is not null;
+
+        // Playlist rows of items playing get white text, like their player lines.
+        foreach (var t in PlaylistTracks) t.IsPlaying = DeckFor(t) is not null;
+
         UpdateAirTimes();
         UpdateInsertHints();
     }
@@ -401,10 +422,13 @@ public partial class MainWindow : FluentWindow
         var delta = (now - _lastPlayerTick).TotalSeconds;
         _lastPlayerTick = now;
 
+        // Every line still sounding (on air or playing out) moves on.
+        foreach (var slot in _players)
+            if (slot.IsPlaying && slot.Track is { } track && DeckFor(track) is { } playing)
+                slot.Elapsed = playing.Elapsed.TotalSeconds;
+
         if (_onAir is { } deck)
         {
-            _players[0].Elapsed = deck.Elapsed.TotalSeconds;
-
             // Mix point reached (auto mode): start the next item and let this one play out
             // underneath; it stays in the playlist until it ends.
             if (!_isManualMode && !_autoHalted
@@ -506,8 +530,9 @@ public partial class MainWindow : FluentWindow
             }
         }
         SyncPlayers();
-        // A Wait-until may have been in the top line already, before it got its length.
-        if (_onAir?.Track.IsWait == true) _players[0].Refresh();
+        // A Wait-until may have been in a player line already, before it got its length.
+        if (_onAir?.Track is { IsWait: true } wait)
+            _players.FirstOrDefault(p => ReferenceEquals(p.Track, wait))?.Refresh();
     }
 
     private void OnDeckEnded(PlayoutDeck deck)
@@ -634,6 +659,20 @@ public partial class MainWindow : FluentWindow
         return rounded.TotalHours >= 1 ? rounded.ToString(@"h\:mm\:ss") : rounded.ToString(@"mm\:ss");
     }
 
+    // ---------- Note command ----------
+    // Just a note in the playlist: it has no length, doesn't play, and is passed like other commands.
+
+    // Dropped from the library: ask for the text, then insert before `before` (or at the end).
+    private void InsertNote(LibraryTrack? before)
+    {
+        var win = new NoteWindow { Owner = this };
+        if (win.ShowDialog() != true) return;
+
+        var index = before is null ? -1 : PlaylistTracks.IndexOf(before);
+        PlaylistTracks.Insert(index < 0 ? PlaylistTracks.Count : index,
+            new LibraryTrack { Event = "Command", Title = $"Note: {win.Text}" });
+    }
+
     // The hour an insertion point belongs to: the nearest hour marker above it, else the current hour.
     private DateTime HourAt(int index)
     {
@@ -702,6 +741,21 @@ public partial class MainWindow : FluentWindow
             var next = i + 1 < PlaylistTracks.Count ? PlaylistTracks[i + 1] : null;
             track.ShowInsertHint = next is null || next.IsHourMarker;
         }
+    }
+
+    // Row details span the whole row, so the hint is placed from the live column positions:
+    // at the start of the Title column, past the cell padding, lined up with the titles.
+    private void UpdateInsertHintLayout()
+    {
+        double titleLeft = 0;
+        foreach (var column in ScheduleGrid.Columns.OrderBy(c => c.DisplayIndex))
+        {
+            if (column == ScheduleTitleColumn) break;
+            if (column.Visibility == Visibility.Visible) titleLeft += column.ActualWidth;
+        }
+
+        const double cellPadding = 8;
+        ScheduleGrid.Resources["InsertHintMargin"] = new Thickness(titleLeft + cellPadding, 0, 0, 0);
     }
 
     // ---------- Air times (playlist "Air Time" column) ----------
@@ -930,6 +984,14 @@ public partial class MainWindow : FluentWindow
         {
             LibraryTracks.Add(track);
         }
+    }
+
+    private void MassImportButton_Click(object sender, RoutedEventArgs e)
+    {
+        var libraryPaths = LibraryTracks.Where(t => t.HasAudio).Select(t => t.FilePath!);
+        var win = new MassImportWindow(libraryPaths) { Owner = this };
+        if (win.ShowDialog() != true) return;
+        foreach (var track in win.Result) LibraryTracks.Add(track);
     }
 
     private void EditTrackButton_Click(object sender, RoutedEventArgs e)

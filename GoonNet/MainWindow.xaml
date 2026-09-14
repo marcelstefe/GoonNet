@@ -452,6 +452,10 @@
                                   BeginningEdit="ScheduleGrid_BeginningEdit"
                                   SelectionChanged="ScheduleGrid_SelectionChanged"
                                   Margin="8">
+                            <DataGrid.Resources>
+                                <!-- Insert hint offset; kept on the Title column by UpdateInsertHintLayout. -->
+                                <Thickness x:Key="InsertHintMargin">228,0,0,0</Thickness>
+                            </DataGrid.Resources>
                             <DataGrid.ColumnHeaderStyle>
                                 <Style TargetType="dgprim:DataGridColumnHeader">
                                     <Setter Property="FontWeight" Value="Normal"/>
@@ -485,18 +489,23 @@
                                         <DataTrigger Binding="{Binding ShowInsertHint}" Value="True">
                                             <Setter Property="DetailsVisibility" Value="Visible"/>
                                         </DataTrigger>
+                                        <!-- Playing (on air or playing out): white text, as in the top players -->
+                                        <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </DataGrid.RowStyle>
-                            <!-- Under an empty hour marker: arrow below the clock icon, text lined up with the titles.
+                            <!-- Under an empty hour marker: arrow and text in the Title column, lined up with the titles.
                                  Dropping a track here puts it into that hour. -->
                             <DataGrid.RowDetailsTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Height="24" Margin="188,0,0,0">
+                                    <StackPanel Orientation="Horizontal" Height="24"
+                                                Margin="{DynamicResource InsertHintMargin}">
                                         <svgc:SvgViewbox Source="/res/studio/corner-down-right.svg"
                                                          Width="14" Height="14" VerticalAlignment="Center"
                                                          RenderOptions.BitmapScalingMode="HighQuality"/>
-                                        <TextBlock Text="Insert Tracks Here..." Margin="26,0,0,0"
+                                        <TextBlock Text="Insert Tracks Here..." Margin="6,0,0,0"
                                                    VerticalAlignment="Center" FontSize="12" Foreground="#808080"/>
                                     </StackPanel>
                                 </DataTemplate>
@@ -537,15 +546,26 @@
                                 <DataGridTemplateColumn Header="Event" Width="50">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <svgc:SvgViewbox Source="{Binding Event, Converter={StaticResource EventIcon}}"
-                                                             Width="15" Height="15"
+                                            <svgc:SvgViewbox Width="15" Height="15"
                                                              HorizontalAlignment="Center" VerticalAlignment="Center"
                                                              ToolTip="{Binding Event}"
-                                                             RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                             RenderOptions.BitmapScalingMode="HighQuality">
+                                                <svgc:SvgViewbox.Style>
+                                                    <Style TargetType="svgc:SvgViewbox">
+                                                        <Setter Property="Source" Value="{Binding Event, Converter={StaticResource EventIcon}}"/>
+                                                        <Style.Triggers>
+                                                            <!-- Hour markers ("Hour Playlist") get the clock -->
+                                                            <DataTrigger Binding="{Binding IsHourMarker}" Value="True">
+                                                                <Setter Property="Source" Value="pack://application:,,,/res/events/clock.svg"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </svgc:SvgViewbox.Style>
+                                            </svgc:SvgViewbox>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Title" Width="*">
+                                <DataGridTemplateColumn x:Name="ScheduleTitleColumn" Header="Title" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -614,7 +634,8 @@
                                     </Button>
                                     <Button Width="40" Height="40" Margin="0,0,8,0" ToolTip="Mass Import Files"
                                             Background="Black" Foreground="White"
-                                            BorderThickness="0" Cursor="Hand">
+                                            BorderThickness="0" Cursor="Hand"
+                                            Click="MassImportButton_Click">
                                         <Button.Resources>
                                             <Style TargetType="Border"><Setter Property="CornerRadius" Value="8"/></Style>
                                         </Button.Resources>

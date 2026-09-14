@@ -19,6 +19,7 @@ public enum CommandKind
     None,
     FixedTimeMarker,
     Wait,
+    Note,
 }
 
 public class LibraryTrack : INotifyPropertyChanged
@@ -119,6 +120,19 @@ public class LibraryTrack : INotifyPropertyChanged
             if (_showInsertHint == value) return;
             _showInsertHint = value;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShowInsertHint)));
+        }
+    }
+
+    private bool _isPlaying;
+    /// <summary>Playlist items on air or still playing out; the row's text turns white.</summary>
+    public bool IsPlaying
+    {
+        get => _isPlaying;
+        set
+        {
+            if (_isPlaying == value) return;
+            _isPlaying = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsPlaying)));
         }
     }
 
